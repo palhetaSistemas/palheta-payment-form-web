@@ -12,7 +12,7 @@ export function Step5() {
       </span>
       <div className="flex flex-col gap-4">
         <label className="text-default-600 w-max font-semibold text-sm">
-          Selecione abaixo:
+          Selecione abaixo*:
         </label>
         <label
           onClick={() => {

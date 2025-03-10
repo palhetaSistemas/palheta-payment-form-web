@@ -13,7 +13,7 @@ export function Step0() {
       <div className="flex flex-col gap-4">
         <div className="flex flex-col">
           <label className="text-default-600 w-max font-semibold text-sm">
-            Insira seu nome aqui
+            Insira seu nome aqui*
           </label>
           <input
             className="w-full rounded-xl border-2 border-[#123262] h-12 px-4 focus:outline-none placeholder:text-default-400"
@@ -24,7 +24,7 @@ export function Step0() {
         </div>
         <div className="flex flex-col">
           <label className="text-default-600 w-max font-semibold text-sm">
-            Seu sobrenome aqui
+            Seu sobrenome aqui*
           </label>
           <input
             className="w-full rounded-xl border-2 border-[#123262] h-12 px-4 focus:outline-none placeholder:text-default-400"

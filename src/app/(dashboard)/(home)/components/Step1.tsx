@@ -90,7 +90,7 @@ export function Step1() {
       <div className="flex flex-col gap-4">
         <div className="flex flex-col">
           <label className="text-default-600 w-max font-semibold text-sm">
-            Estado
+            Estado*
           </label>
           <DropdownMenu
             open={isStateListOpen}
@@ -146,7 +146,7 @@ export function Step1() {
         </div>
         <div className="flex flex-col">
           <label className="text-default-600 w-max font-semibold text-sm">
-            Cidade
+            Cidade*
           </label>
           <DropdownMenu open={isCityListOpen} onOpenChange={setIsCityListOpen}>
             <DropdownMenuTrigger asChild>

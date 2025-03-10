@@ -14,7 +14,7 @@ export function Step2() {
       {!formData.churchPosition ? (
         <div className="flex flex-col gap-4">
           <label className="text-default-600 w-max font-semibold text-sm">
-            Selecione abaixo:
+            Selecione abaixo*:
           </label>
           <label
             onClick={() => {

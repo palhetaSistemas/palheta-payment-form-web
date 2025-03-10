@@ -44,7 +44,7 @@ export function Step10() {
       <div className="flex flex-col gap-4">
         <div className="flex flex-col">
           <label className="text-default-600 w-max font-semibold text-sm">
-            Insira seu Telefone
+            Insira seu Telefone*
           </label>
           <div className="flex items-center gap-4 w-full">
             <label className="h-12 w-28 border rounded-xl px-4 flex items-center gap-2">

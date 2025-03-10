@@ -60,7 +60,7 @@ export function Step11() {
       <div className="flex flex-col gap-4">
         <div className="flex flex-col">
           <label className="text-[#123262] w-max font-semibold text-sm">
-            DATA:
+            DATA*:
           </label>
           <div className="w-full">
             <Swiper spaceBetween={10} centeredSlides slidesPerView={5}>
@@ -96,7 +96,7 @@ export function Step11() {
           </div>
           <div className="flex flex-col">
             <label className="text-[#123262] w-max font-semibold text-sm">
-              HORÁRIO:
+              HORÁRIO*:
             </label>
             <div className="flex flex-wrap items-center justify-center w-full gap-2">
               {formData.selectedDate.date &&
