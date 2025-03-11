@@ -20,6 +20,34 @@ export const IBGE = axios.create({
   baseURL: "https://servicodados.ibge.gov.br/api/v1/localidades/",
 });
 
+export const Address = axios.create({
+  baseURL: "https://viacep.com.br/ws/",
+});
+
+export const AddressApi = async (url: string) => {
+  const connect = await Address.get(url)
+    .then(({ data }) => {
+      return {
+        status: 200,
+        body: data,
+      };
+    })
+    .catch((err) => {
+      const message = err.response.data;
+      const status = err.response.status;
+      return { status, body: message };
+    });
+
+  return connect.status === 500
+    ? { status: connect.status, body: "Ops! algo deu errado, tente novamente" }
+    : connect.status === 413
+    ? {
+        status: connect.status,
+        body: "Ops! algo deu errado, tente novamente ou escolha outra imagem",
+      }
+    : connect;
+};
+
 export const IBGEAPI = async (url: string) => {
   const connect = await IBGE.get(url)
     .then(({ data }) => {

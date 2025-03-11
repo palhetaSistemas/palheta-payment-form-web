@@ -63,8 +63,6 @@ const Header = ({
   const isDesktop = useMediaQuery("(min-width: 1280px)");
   const isMobile = useMediaQuery("(min-width: 768px)");
 
-  console.log("layout: ", layout);
-
   // set header style to classic if isDesktop
   React.useEffect(() => {
     if (!isDesktop && layout === "horizontal") {

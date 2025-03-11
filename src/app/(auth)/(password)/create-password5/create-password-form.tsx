@@ -44,7 +44,6 @@ const CreatePasswordForm = () => {
   const toggleVisibility = () => setIsVisible(!isVisible);
 
   const onSubmit = (data: any) => {
-    console.log("Form Data:", data);
     startTransition(async () => {
       toast.success("reset successful");
       reset();

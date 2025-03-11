@@ -28,11 +28,10 @@ export function StartView() {
           )}
         >
           <span className="font-bold text-2xl text-white">
-            SOLICITE SEU ORÇAMENTO
+            VAMOS AO TRABALHO
           </span>
           <span className="text-white">
-            Por favor, preencha e envie este formulário para receber seu
-            orçamento de projeto.
+            PREENCHA O FORMULÁRIO PARA INICIARMOS O TRABALHO
           </span>
         </div>
       </div>

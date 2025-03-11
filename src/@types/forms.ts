@@ -1,27 +1,34 @@
 export interface FormProps {
   name: string;
-  surname: string;
+  cpfCnpj: string;
+  zipCode: string;
+  neighborhood: string;
+  street: string;
+  number: string;
   state: string;
   city: string;
-  churchPosition: string | null;
-  churchName: string;
-  objective: number | null;
-  expectedCapacity: number | null;
-  expectedCost: number | null;
-  churchWidth?: string;
-  churchLength?: string;
-  firstBudget: boolean | null;
-  expectedInvestment: number | null;
-  description: string;
-  mobilePhone: string;
-  selectedDate: {
-    date: string | null;
-    time: string | null;
-  };
+  email: string;
+  service: string | null;
 }
 
 export interface LocationProps {
   label: string;
   value: string;
   id: number;
+}
+
+export interface AddressDataProps {
+  bairro: string;
+  cep: string;
+  complemento: string;
+  ddd: string;
+  estado: string;
+  gia: string;
+  ibge: string;
+  localidade: string;
+  logradouro: string;
+  regiao: string;
+  siafi: string;
+  uf: string;
+  unidade: string;
 }

@@ -1,22 +1,14 @@
 "use client";
 import { Sheet, SheetContent } from "@/src/components/ui/sheet";
 import { useEffect, useState } from "react";
-import { Step0 } from "./Step0";
-import { Step1 } from "./Step1";
 import { ArrowLeft } from "lucide-react";
-import { Step2 } from "./Step2";
-import { Step3 } from "./Step3";
-import { Step4 } from "./Step4";
-import { Step5 } from "./Step5";
-import { Step6 } from "./Step6";
-import { Step7 } from "./Step7";
-import { Step8 } from "./Step8";
-import { Step9 } from "./Step9";
-import { Step10 } from "./Step10";
-import { Step11 } from "./Step11";
 import { useFormContext } from "@/src/context/Contex";
 import toast from "react-hot-toast";
 import { cn } from "@/src/lib/utils";
+import { Step0 } from "./Step0";
+import { Step1 } from "./Step1";
+import { Step2 } from "./Step2";
+import { Step3 } from "./Step3";
 
 interface FormSheetProps {
   open: boolean;
@@ -30,81 +22,27 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
 
   const HandleNextStep = () => {
     if (currentStep === 0) {
-      if (formData.name === "" || formData.surname === "") {
-        return toast.error("Preencha seu nome e sobrenome");
-      } else if (formData.name !== "" && formData.surname !== "") {
+      if (formData.name === "") {
+        return toast.error("Insira seu nome ou razão social");
+      } else {
         return setCurrentStep(currentStep + 1);
       }
     } else if (currentStep === 1) {
-      if (formData.state === "" || formData.city === "") {
-        return toast.error("Preencha seu estado e cidade");
-      } else if (formData.state !== "" && formData.city !== "") {
+      if (formData.cpfCnpj === "") {
+        return toast.error("Insira seu CPF ou CNPJ");
+      } else {
         return setCurrentStep(currentStep + 1);
       }
     } else if (currentStep === 2) {
-      if (
-        formData.churchPosition === "" ||
-        formData.churchPosition === null ||
-        formData.churchName === ""
-      ) {
-        return toast.error("Preencha sua função na igreja");
-      } else if (
-        formData.churchPosition !== "" &&
-        formData.churchPosition !== null &&
-        formData.churchName !== ""
-      ) {
+      if (formData.zipCode === "" || formData.number === "") {
+        return toast.error("Insira seu CEP e número");
+      } else {
         return setCurrentStep(currentStep + 1);
       }
     } else if (currentStep === 3) {
-      if (formData.objective === null) {
-        return toast.error("Preencha seu objetivo");
-      } else if (formData.objective !== null) {
-        return setCurrentStep(currentStep + 1);
-      }
-    } else if (currentStep === 4) {
-      if (formData.expectedCapacity === null) {
-        return toast.error("Preencha sua capacidade esperada");
-      } else if (formData.expectedCapacity !== null) {
-        return setCurrentStep(currentStep + 1);
-      }
-    } else if (currentStep === 5) {
-      if (formData.expectedCost === null) {
-        return toast.error("Preencha seu orçamento esperado");
-      } else if (formData.expectedCost !== null) {
-        return setCurrentStep(currentStep + 1);
-      }
-    } else if (currentStep === 6) {
-      return setCurrentStep(currentStep + 1);
-    } else if (currentStep === 7) {
-      if (formData.firstBudget === null) {
-        return toast.error("Preencha se já fez outros orçamentos");
-      } else if (formData.firstBudget !== null) {
-        return setCurrentStep(currentStep + 1);
-      }
-    } else if (currentStep === 8) {
-      if (formData.expectedInvestment === null) {
-        return toast.error("Preencha seu investimento esperado");
-      } else if (formData.expectedInvestment !== null) {
-        return setCurrentStep(currentStep + 1);
-      }
-    } else if (currentStep === 9) {
-      return setCurrentStep(currentStep + 1);
-    } else if (currentStep === 10) {
-      if (formData.mobilePhone === "") {
-        return toast.error("Preencha seu telefone");
-      } else if (formData.mobilePhone !== "") {
-        return setCurrentStep(currentStep + 1);
-      }
-    } else if (currentStep === 11) {
-      if (
-        formData.selectedDate.date === null ||
-        formData.selectedDate.time === null
-      ) {
-        return toast.error("Preencha sua data e hora");
-      } else if (
-        formData.selectedDate.date !== null &&
-        formData.selectedDate.time !== null
-      ) {
+      if (formData.email === "" || formData.service === null) {
+        return toast.error("Insira seu email e escolha um serviço");
+      } else {
         return setCurrentStep(currentStep + 1);
       }
     }
@@ -112,82 +50,28 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
 
   useEffect(() => {
     if (currentStep === 0) {
-      if (formData.name === "" || formData.surname === "") {
-        setAllowNextStep(false);
-      } else if (formData.name !== "" && formData.surname !== "") {
-        setAllowNextStep(true);
+      if (formData.name === "") {
+        return setAllowNextStep(false);
+      } else {
+        return setAllowNextStep(true);
       }
     } else if (currentStep === 1) {
-      if (formData.state === "" || formData.city === "") {
-        setAllowNextStep(false);
-      } else if (formData.state !== "" && formData.city !== "") {
-        setAllowNextStep(true);
+      if (formData.cpfCnpj === "") {
+        return setAllowNextStep(false);
+      } else {
+        return setAllowNextStep(true);
       }
     } else if (currentStep === 2) {
-      if (
-        formData.churchPosition === "" ||
-        formData.churchPosition === null ||
-        formData.churchName === ""
-      ) {
-        setAllowNextStep(false);
-      } else if (
-        formData.churchPosition !== "" &&
-        formData.churchPosition !== null &&
-        formData.churchName !== ""
-      ) {
-        setAllowNextStep(true);
+      if (formData.zipCode === "" || formData.number === "") {
+        return setAllowNextStep(false);
+      } else {
+        return setAllowNextStep(true);
       }
     } else if (currentStep === 3) {
-      if (formData.objective === null) {
-        setAllowNextStep(false);
-      } else if (formData.objective !== null) {
-        setAllowNextStep(true);
-      }
-    } else if (currentStep === 4) {
-      if (formData.expectedCapacity === null) {
-        setAllowNextStep(false);
-      } else if (formData.expectedCapacity !== null) {
-        setAllowNextStep(true);
-      }
-    } else if (currentStep === 5) {
-      if (formData.expectedCost === null) {
-        setAllowNextStep(false);
-      } else if (formData.expectedCost !== null) {
-        setAllowNextStep(true);
-      }
-    } else if (currentStep === 6) {
-      setAllowNextStep(true);
-    } else if (currentStep === 7) {
-      if (formData.firstBudget === null) {
-        setAllowNextStep(false);
-      } else if (formData.firstBudget !== null) {
-        setAllowNextStep(true);
-      }
-    } else if (currentStep === 8) {
-      if (formData.expectedInvestment === null) {
-        setAllowNextStep(false);
-      } else if (formData.expectedInvestment !== null) {
-        setAllowNextStep(true);
-      }
-    } else if (currentStep === 9) {
-      setAllowNextStep(true);
-    } else if (currentStep === 10) {
-      if (formData.mobilePhone === "") {
-        setAllowNextStep(false);
-      } else if (formData.mobilePhone !== "") {
-        setAllowNextStep(true);
-      }
-    } else if (currentStep === 11) {
-      if (
-        formData.selectedDate.date === null ||
-        formData.selectedDate.time === null
-      ) {
-        setAllowNextStep(false);
-      } else if (
-        formData.selectedDate.date !== null &&
-        formData.selectedDate.time !== null
-      ) {
-        setAllowNextStep(true);
+      if (formData.email === "" || formData.service === null) {
+        return setAllowNextStep(false);
+      } else {
+        return setAllowNextStep(true);
       }
     }
   }, [formData, currentStep]);
@@ -196,7 +80,7 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetContent
         side="bottom"
-        className="min-h-1/2 flex flex-col w-full lg:w-[500px] lg:mx-auto justify-between max-h-[calc(100%-15rem)]"
+        className="min-h-1/2 pt-8 flex flex-col w-full lg:w-[500px] lg:mx-auto justify-between max-h-[calc(100%-15rem)]"
       >
         {currentStep > 0 && (
           <ArrowLeft
@@ -212,24 +96,8 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
           <Step1 />
         ) : currentStep === 2 ? (
           <Step2 />
-        ) : currentStep === 3 ? (
-          <Step3 />
-        ) : currentStep === 4 ? (
-          <Step4 />
-        ) : currentStep === 5 ? (
-          <Step5 />
-        ) : currentStep === 6 ? (
-          <Step6 />
-        ) : currentStep === 7 ? (
-          <Step7 />
-        ) : currentStep === 8 ? (
-          <Step8 />
-        ) : currentStep === 9 ? (
-          <Step9 />
-        ) : currentStep === 10 ? (
-          <Step10 />
         ) : (
-          <Step11 />
+          <Step3 />
         )}
         <button
           onClick={HandleNextStep}

@@ -17,24 +17,15 @@ interface ProviderProps {
 export const FormContextProvider = ({ children }: ProviderProps) => {
   const [formData, setFormData] = useState<FormProps>({
     name: "",
-    surname: "",
+    cpfCnpj: "",
+    zipCode: "",
+    neighborhood: "",
+    street: "",
+    number: "",
     state: "",
     city: "",
-    churchPosition: "",
-    churchName: "",
-    objective: null,
-    expectedCapacity: null,
-    expectedCost: null,
-    churchWidth: "",
-    churchLength: "",
-    firstBudget: null,
-    expectedInvestment: null,
-    description: "",
-    mobilePhone: "",
-    selectedDate: {
-      date: null,
-      time: null,
-    },
+    email: "",
+    service: null,
   });
 
   return (
