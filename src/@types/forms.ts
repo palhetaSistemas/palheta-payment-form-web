@@ -5,10 +5,13 @@ export interface FormProps {
   neighborhood: string;
   street: string;
   number: string;
+  expectedCapacity: number | null;
+  area: number | null;
+  numberOfFloors: number | null;
   state: string;
   city: string;
   email: string;
-  service: string | null;
+  services: string[] | null;
 }
 
 export interface LocationProps {

@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { FormProps } from "../@types/forms";
 
 interface FormContextProps {
@@ -21,11 +21,14 @@ export const FormContextProvider = ({ children }: ProviderProps) => {
     zipCode: "",
     neighborhood: "",
     street: "",
+    area: null,
+    numberOfFloors: null,
+    expectedCapacity: null,
     number: "",
     state: "",
     city: "",
     email: "",
-    service: null,
+    services: [],
   });
 
   return (
