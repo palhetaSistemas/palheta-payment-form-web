@@ -1,7 +1,7 @@
-import Image from "next/image";
-import { FormSheet } from "./FormSheet";
-import { useState } from "react";
 import { cn } from "@/src/lib/utils";
+import Image from "next/image";
+import { useState } from "react";
+import { FormSheet } from "./FormSheet";
 
 export function StartView() {
   const [openFormSheet, setOpenFormSheet] = useState(false);
@@ -9,7 +9,7 @@ export function StartView() {
     <>
       <div
         className={cn(
-          "flex w-11/12 flex-col gap-2 h-full my-auto -translate-y-1/4 justify-center transition duration-700",
+          "flex w-11/12 flex-col gap-8 h-full my-auto -translate-y-1/4 justify-center transition duration-700",
           openFormSheet && "-translate-y-full"
         )}
       >
@@ -27,11 +27,11 @@ export function StartView() {
             openFormSheet && "opacity-0"
           )}
         >
-          <span className="font-bold text-2xl text-white">
+          <span className="font-bold text-2xl text-center text-white">
             VAMOS AO TRABALHO
           </span>
-          <span className="text-white">
-            PREENCHA O FORMULÁRIO PARA INICIARMOS O TRABALHO
+          <span className="text-white text-center">
+            PREENCHA O CONTRATO PARA INICIARMOS O TRABALHO
           </span>
         </div>
       </div>
