@@ -1,15 +1,17 @@
 "use client";
 import { Sheet, SheetContent } from "@/src/components/ui/sheet";
-import { useEffect, useState } from "react";
-import { ArrowLeft } from "lucide-react";
 import { useFormContext } from "@/src/context/Contex";
-import toast from "react-hot-toast";
 import { cn } from "@/src/lib/utils";
+import { ArrowLeft } from "lucide-react";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { Step0 } from "./Step0";
 import { Step1 } from "./Step1";
 import { Step2 } from "./Step2";
 import { Step3 } from "./Step3";
 import { Step4 } from "./Step4";
+import { Step5 } from "./Step5";
+import { Step6 } from "./Step6";
 
 interface FormSheetProps {
   open: boolean;
@@ -41,8 +43,20 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
         return setCurrentStep(currentStep + 1);
       }
     } else if (currentStep === 3) {
-      if (formData.email === "" || formData.service === null) {
+      if (formData.email === "" || formData.services === null) {
         return toast.error("Insira seu email e escolha um serviço");
+      } else {
+        return setCurrentStep(currentStep + 1);
+      }
+    } else if (currentStep === 4) {
+      if (formData.expectedCapacity === null) {
+        return toast.error("Selecione a capacidade esperada");
+      } else {
+        return setCurrentStep(currentStep + 1);
+      }
+    } else if (currentStep === 5) {
+      if (formData.expectedCapacity === null) {
+        return toast.error("Selecione a capacidade esperada");
       } else {
         return setCurrentStep(currentStep + 1);
       }
@@ -69,11 +83,15 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
         return setAllowNextStep(true);
       }
     } else if (currentStep === 3) {
-      if (formData.email === "" || formData.service === null) {
+      if (formData.email === "" || formData.services === null) {
         return setAllowNextStep(false);
       } else {
         return setAllowNextStep(true);
       }
+    } else if (currentStep === 4) {
+      setAllowNextStep(true);
+    } else if (currentStep === 5) {
+      setAllowNextStep(true);
     }
   }, [formData, currentStep]);
 
@@ -99,8 +117,12 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
           <Step2 />
         ) : currentStep === 3 ? (
           <Step3 />
-        ) : (
+        ) : currentStep === 4 ? (
           <Step4 />
+        ) : currentStep === 5 ? (
+          <Step5 />
+        ) : (
+          <Step6 />
         )}
         <button
           onClick={HandleNextStep}

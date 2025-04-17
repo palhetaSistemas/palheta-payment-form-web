@@ -2,9 +2,25 @@
 
 import { useFormContext } from "@/src/context/Contex";
 import { cn } from "@/src/lib/utils";
+import { Check } from "lucide-react";
 
 export function Step3() {
   const { formData, setFormData } = useFormContext();
+
+  const toggleService = (service: string) => {
+    const currentServices = formData.services || [];
+    if (currentServices.includes(service)) {
+      setFormData({
+        ...formData,
+        services: currentServices.filter((s) => s !== service),
+      });
+    } else {
+      setFormData({
+        ...formData,
+        services: [...currentServices, service],
+      });
+    }
+  };
 
   return (
     <div className="flex flex-col gap-8 w-full">
@@ -33,105 +49,98 @@ export function Step3() {
         <span className="font-bold text-lg text-[#123262]">SERVIÇOS</span>
         <div className="flex flex-col gap-4">
           <label className="text-default-600 w-max font-semibold text-sm">
-            Selecione abaixo*
+            Selecione os serviços desejados *
           </label>
           <label
-            onClick={() => {
-              if (formData.service === "PROJETO ARQUITETÔNICO") {
-                setFormData({ ...formData, service: null });
-              } else {
-                setFormData({ ...formData, service: "PROJETO ARQUITETÔNICO" });
-              }
-            }}
+            onClick={() => toggleService("PROJETO ARQUITETÔNICO")}
             className={cn(
               "w-full flex items-center gap-2 rounded-xl border-2 h-12 px-4 relative transition duration-150",
-              formData.service === "PROJETO ARQUITETÔNICO" &&
+              formData?.services?.includes("PROJETO ARQUITETÔNICO") &&
                 "border-[#123262] shadow-lg"
             )}
           >
             <div
               className={cn(
-                "w-5 h-5 border rounded-full flex items-center justify-center",
-                formData.service === "PROJETO ARQUITETÔNICO" && "border-none"
+                "w-5 h-5 border rounded flex items-center justify-center",
+                formData?.services?.includes("PROJETO ARQUITETÔNICO") &&
+                  "border-none"
               )}
             >
               <div
                 className={cn(
-                  "opacity-0 w-4 h-4 rounded-full bg-[#123262] transition duration-150",
-                  formData.service === "PROJETO ARQUITETÔNICO" && "opacity-100"
+                  "opacity-0 w-4 h-4 rounded border border-[#123262] transition duration-150 flex items-center ju",
+                  formData?.services?.includes("PROJETO ARQUITETÔNICO") &&
+                    "opacity-100"
                 )}
-              />
+              >
+                {formData?.services?.includes("PROJETO ARQUITETÔNICO") && (
+                  <Check color="#123262" />
+                )}
+              </div>
             </div>
             <span className="text-[#123262] text-bold">
               PROJETO ARQUITETÔNICO
             </span>
           </label>
           <label
-            onClick={() => {
-              if (formData.service === "3D E MÍDIAS PARA REDES SOCIAIS") {
-                setFormData({ ...formData, service: null });
-              } else {
-                setFormData({
-                  ...formData,
-                  service: "3D E MÍDIAS PARA REDES SOCIAIS",
-                });
-              }
-            }}
+            onClick={() => toggleService("3D E MÍDIAS PARA REDES SOCIAIS")}
             className={cn(
               "w-full flex items-center gap-2 rounded-xl border-2 h-12 px-4 relative transition duration-150",
-              formData.service === "3D E MÍDIAS PARA REDES SOCIAIS" &&
+              formData?.services?.includes("3D E MÍDIAS PARA REDES SOCIAIS") &&
                 "border-[#123262] shadow-lg"
             )}
           >
             <div
               className={cn(
-                "w-5 h-5 border rounded-full flex items-center justify-center",
-                formData.service === "3D E MÍDIAS PARA REDES SOCIAIS" &&
-                  "border-none"
+                "w-5 h-5 border rounded flex items-center justify-center",
+                formData?.services?.includes(
+                  "3D E MÍDIAS PARA REDES SOCIAIS"
+                ) && "border-none"
               )}
             >
               <div
                 className={cn(
-                  "opacity-0 w-4 h-4 rounded-full bg-[#123262] transition duration-150",
-                  formData.service === "3D E MÍDIAS PARA REDES SOCIAIS" &&
-                    "opacity-100"
+                  "opacity-0 w-4 h-4 rounded border border-[#123262] transition duration-150 flex items-center ju",
+                  formData?.services?.includes(
+                    "3D E MÍDIAS PARA REDES SOCIAIS"
+                  ) && "opacity-100"
                 )}
-              />
+              >
+                {formData?.services?.includes(
+                  "3D E MÍDIAS PARA REDES SOCIAIS"
+                ) && <Check color="#123262" />}
+              </div>
             </div>
             <span className="text-[#123262] text-bold">
               3D E MÍDIAS PARA REDES SOCIAIS
             </span>
           </label>
           <label
-            onClick={() => {
-              if (formData.service === "PROJETOS COMPLEMENTARES") {
-                setFormData({ ...formData, service: null });
-              } else {
-                setFormData({
-                  ...formData,
-                  service: "PROJETOS COMPLEMENTARES",
-                });
-              }
-            }}
+            onClick={() => toggleService("PROJETOS COMPLEMENTARES")}
             className={cn(
               "w-full flex items-center gap-2 rounded-xl border-2 h-12 px-4 relative transition duration-150",
-              formData.service === "PROJETOS COMPLEMENTARES" &&
+              (formData.services || []).includes("PROJETOS COMPLEMENTARES") &&
                 "border-[#123262] shadow-lg"
             )}
           >
             <div
               className={cn(
-                "w-5 h-5 border rounded-full flex items-center justify-center",
-                formData.service === "PROJETOS COMPLEMENTARES" && "border-none"
+                "w-5 h-5 border rounded flex items-center justify-center",
+                formData?.services?.includes("PROJETOS COMPLEMENTARES") &&
+                  "border-none"
               )}
             >
               <div
                 className={cn(
-                  "opacity-0 w-4 h-4 rounded-full bg-[#123262] transition duration-150",
-                  formData.service === "PROJETOS COMPLEMENTARES" &&
+                  "opacity-0 w-4 h-4 rounded border border-[#123262] transition duration-150 flex items-center justify-center",
+                  formData?.services?.includes("PROJETOS COMPLEMENTARES") &&
                     "opacity-100"
                 )}
-              />
+              >
+                {formData?.services?.includes("PROJETOS COMPLEMENTARES") && (
+                  <Check color="#123262" />
+                )}
+              </div>
             </div>
             <span className="text-[#123262] text-bold">
               PROJETOS COMPLEMENTARES
