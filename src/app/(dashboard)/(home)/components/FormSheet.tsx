@@ -49,8 +49,8 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
         return setCurrentStep(currentStep + 1);
       }
     } else if (currentStep === 4) {
-      if (formData.expectedCapacity === null) {
-        return toast.error("Selecione a capacidade esperada");
+      if (formData.area === 0 || formData.numberOfFloors === 0) {
+        return toast.error("Preencha corretamente os campos abaixo");
       } else {
         return setCurrentStep(currentStep + 1);
       }
@@ -89,9 +89,17 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
         return setAllowNextStep(true);
       }
     } else if (currentStep === 4) {
-      setAllowNextStep(true);
+      if (formData.area === 0 || formData.numberOfFloors === 0) {
+        return setAllowNextStep(false);
+      } else {
+        return setAllowNextStep(true);
+      }
     } else if (currentStep === 5) {
-      setAllowNextStep(true);
+      if (formData.expectedCapacity === null) {
+        return setAllowNextStep(false);
+      } else {
+        return setAllowNextStep(true);
+      }
     }
   }, [formData, currentStep]);
 
