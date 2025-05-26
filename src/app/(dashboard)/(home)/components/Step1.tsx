@@ -13,7 +13,7 @@ export function Step1() {
           Seu CNPJ ou CPF*
         </label>
         <input
-          className="w-full rounded-xl border-2 border-[#123262] h-12 px-4 focus:outline-none placeholder:text-default-400"
+          className="w-full rounded-xl text-[16px] border-2 border-[#123262] h-12 px-4 focus:outline-none placeholder:text-default-400"
           placeholder="000.000.000-00"
           onChange={(e) =>
             setFormData({ ...formData, cpfCnpj: maskCpfCnpj(e.target.value) })

@@ -1,5 +1,5 @@
 "use client";
-import { AddressDataProps, LocationProps } from "@/src/@types/forms";
+import { LocationProps } from "@/src/@types/forms";
 import {
   Command,
   CommandEmpty,
@@ -10,7 +10,6 @@ import {
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/src/components/ui/dropdown-menu";
 import { ScrollArea } from "@/src/components/ui/scroll-area";
@@ -129,7 +128,7 @@ export function Step2() {
             Insira seu CEP*
           </label>
           <input
-            className="disabled:bg-default-300 disabled:border-default-300 w-full rounded-xl border-2 border-[#123262] h-12 px-4 focus:outline-none placeholder:text-default-400"
+            className="disabled:bg-default-300 text-[16px] disabled:border-default-300 w-full rounded-xl border-2 border-[#123262] h-12 px-4 focus:outline-none placeholder:text-default-400"
             placeholder="00000-000"
             onChange={(e) =>
               setFormData({ ...formData, zipCode: maskCep(e.target.value) })
@@ -144,7 +143,7 @@ export function Step2() {
           </label>
           <input
             disabled={formData.zipCode.length !== 9}
-            className="disabled:bg-default-300 disabled:border-default-300 w-full rounded-xl border-2 border-[#123262] h-12 px-4 focus:outline-none placeholder:text-default-400"
+            className="disabled:bg-default-300 text-[16px] disabled:border-default-300 w-full rounded-xl border-2 border-[#123262] h-12 px-4 focus:outline-none placeholder:text-default-400"
             placeholder="CENTRO"
             onChange={(e) =>
               setFormData({ ...formData, neighborhood: e.target.value })
@@ -160,7 +159,7 @@ export function Step2() {
           </label>
           <input
             disabled={formData.zipCode.length !== 9}
-            className="disabled:bg-default-300 disabled:border-default-300 w-full rounded-xl border-2 border-[#123262] h-12 px-4 focus:outline-none placeholder:text-default-400"
+            className="disabled:bg-default-300 text-[16px] disabled:border-default-300 w-full rounded-xl border-2 border-[#123262] h-12 px-4 focus:outline-none placeholder:text-default-400"
             placeholder="LOGRADOURO"
             onChange={(e) =>
               setFormData({ ...formData, street: e.target.value })
@@ -174,7 +173,7 @@ export function Step2() {
           </label>
           <input
             disabled={formData.zipCode.length !== 9}
-            className="disabled:bg-default-300 disabled:border-default-300 w-full rounded-xl border-2 border-[#123262] h-12 px-4 focus:outline-none placeholder:text-default-400"
+            className="disabled:bg-default-300 text-[16px] disabled:border-default-300 w-full rounded-xl border-2 border-[#123262] h-12 px-4 focus:outline-none placeholder:text-default-400"
             placeholder="NÚMERO"
             onChange={(e) =>
               setFormData({ ...formData, number: e.target.value })

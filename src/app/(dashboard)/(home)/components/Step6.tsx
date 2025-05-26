@@ -10,7 +10,7 @@ export function Step6() {
       <span className="font-bold text-lg text-[#123262] mx-auto w-max">
         CONTRATO
       </span>
-      <div className="w-full h-[600px] bg-default-300 rounded-lg">
+      <div className="w-full h-[400px] lg:h-[600px] bg-default-300 rounded-lg">
         <></>
       </div>
     </>

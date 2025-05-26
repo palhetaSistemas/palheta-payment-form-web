@@ -1,10 +1,15 @@
 import { cn } from "@/src/lib/utils";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FormSheet } from "./FormSheet";
 
 export function StartView() {
   const [openFormSheet, setOpenFormSheet] = useState(false);
+  const [isIphone, setIsIphone] = useState(false);
+  let isIphonee = navigator.userAgent.includes("iPhone");
+  useEffect(() => {
+    if (isIphonee) setIsIphone(true);
+  }, [isIphonee]);
   return (
     <>
       <div
@@ -37,7 +42,9 @@ export function StartView() {
       </div>
       <button
         onClick={() => setOpenFormSheet(true)}
-        className="absolute bottom-10 mx-auto w-11/12 h-12 bg-white border border-[#123262] text-[#123262] font-bold text-lg rounded-lg"
+        className={` absolute ${
+          isIphone ? "bottom-40" : "bottom-10"
+        }  mx-auto w-11/12 h-12 bg-white border border-[#123262] text-[#123262] font-bold text-lg rounded-lg `}
       >
         COMEÇAR
       </button>
