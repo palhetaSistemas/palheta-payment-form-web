@@ -12,6 +12,7 @@ import { Step3 } from "./Step3";
 import { Step4 } from "./Step4";
 import { Step5 } from "./Step5";
 import { Step6 } from "./Step6";
+import { Step7 } from "./Step7";
 
 interface FormSheetProps {
   open: boolean;
@@ -61,6 +62,8 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
       } else {
         return setCurrentStep(currentStep + 1);
       }
+    } else if (currentStep === 6) {
+      return setCurrentStep(currentStep + 1);
     }
   };
 
@@ -101,6 +104,8 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
       } else {
         return setAllowNextStep(true);
       }
+    } else if (currentStep === 6) {
+      setAllowNextStep(true);
     }
   }, [formData, currentStep]);
 
@@ -110,8 +115,6 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
       if (isIphonee) setIsIphone(true);
     }
   }, []);
-
-  console.log("formData: ", formData);
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -144,8 +147,12 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
           <Step4 />
         ) : currentStep === 5 ? (
           <Step5 />
-        ) : (
+        ) : currentStep === 6 ? (
           <Step6 />
+        ) : currentStep === 7 ? (
+          <Step7 />
+        ) : (
+          <></>
         )}
         <button
           onClick={HandleNextStep}

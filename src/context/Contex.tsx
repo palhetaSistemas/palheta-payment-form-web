@@ -29,6 +29,10 @@ export const FormContextProvider = ({ children }: ProviderProps) => {
     city: "",
     email: "",
     services: [],
+    selectedDate: {
+      date: null,
+      time: null,
+    },
   });
 
   return (
