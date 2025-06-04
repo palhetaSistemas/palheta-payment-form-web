@@ -22,11 +22,12 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
   const { formData } = useFormContext();
   const [currentStep, setCurrentStep] = useState(0);
   const [allowNextStep, setAllowNextStep] = useState(false);
+  const [isIphone, setIsIphone] = useState(false);
 
   const HandleNextStep = () => {
     if (currentStep === 0) {
-      if (formData.name === "") {
-        return toast.error("Insira seu nome ou razão social");
+      if (formData.name === "" || formData.email === "") {
+        return toast.error("Insira seu nome e email");
       } else {
         return setCurrentStep(currentStep + 1);
       }
@@ -43,13 +44,13 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
         return setCurrentStep(currentStep + 1);
       }
     } else if (currentStep === 3) {
-      if (formData.email === "" || formData.services === null) {
-        return toast.error("Insira seu email e escolha um serviço");
+      if (formData.services?.length === 0) {
+        return toast.error("Escolha um ou mais serviços");
       } else {
         return setCurrentStep(currentStep + 1);
       }
     } else if (currentStep === 4) {
-      if (formData.area === 0 || formData.numberOfFloors === 0) {
+      if (formData.area === null || formData.numberOfFloors === null) {
         return toast.error("Preencha corretamente os campos abaixo");
       } else {
         return setCurrentStep(currentStep + 1);
@@ -65,7 +66,7 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
 
   useEffect(() => {
     if (currentStep === 0) {
-      if (formData.name === "") {
+      if (formData.name === "" || formData.email === "") {
         return setAllowNextStep(false);
       } else {
         return setAllowNextStep(true);
@@ -83,13 +84,13 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
         return setAllowNextStep(true);
       }
     } else if (currentStep === 3) {
-      if (formData.email === "" || formData.services === null) {
+      if (formData.services?.length === 0) {
         return setAllowNextStep(false);
       } else {
         return setAllowNextStep(true);
       }
     } else if (currentStep === 4) {
-      if (formData.area === 0 || formData.numberOfFloors === 0) {
+      if (formData.area === null || formData.numberOfFloors === null) {
         return setAllowNextStep(false);
       } else {
         return setAllowNextStep(true);
@@ -103,11 +104,25 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
     }
   }, [formData, currentStep]);
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const isIphonee = navigator.userAgent.includes("iPhone");
+      if (isIphonee) setIsIphone(true);
+    }
+  }, []);
+
+  console.log("formData: ", formData);
+
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetContent
         side="bottom"
-        className="min-h-1/2 pt-8 flex flex-col w-full lg:w-[500px] lg:mx-auto justify-between "
+        className={cn(
+          "min-h-1/2 flex flex-col w-full lg:w-[500px] lg:mx-auto justify-between ",
+          currentStep === 4 && "h-[80vh] max-h-max min-h-80",
+          isIphone && " ",
+          isIphone && currentStep === 4 && "  h-[80vh]"
+        )}
       >
         {currentStep > 0 && (
           <ArrowLeft
