@@ -6,37 +6,29 @@ export function Step4() {
   const { formData, setFormData } = useFormContext();
 
   return (
-    <>
-      <div className="flex flex-col gap-8 w-full">
-        <div className="flex flex-col gap-2">
-          <span className="font-bold text-lg text-[#123262]">
-            ÁREA DA CONSTRUÇÃO
-          </span>
-          <div className="flex flex-col gap-4">
-            <div className="flex flex-col">
-              <label className="text-default-600 w-max font-semibold text-sm">
-                ÁREA EM M²
-              </label>
-              <input
-                className="w-full rounded-xl text-[16px] border-2 border-[#123262] h-12 px-4 focus:outline-none placeholder:text-default-400"
-                placeholder="INSIRA SEU EMAIL"
-                onChange={(e) =>
-                  setFormData({ ...formData, area: Number(e.target.value) })
-                }
-                value={Number(formData.area)}
-                type="number"
-              />
-            </div>
-          </div>
-        </div>
-        <div className="flex flex-col gap-2">
-          <span className="font-bold text-lg text-[#123262]">
-            QUANTIDADE DE PAVIMENTOS
-          </span>
-
-          <div className="flex flex-col gap-4">
+    <div className="max-h-[60%] pb-20">
+      <span className="font-bold text-lg text-[#123262] w-full text-center mx-auto">
+        SELECIONE A ÁREA E A QUANTIDADE DE PISOS
+      </span>
+      <div className="flex flex-col gap-4 h-full">
+        <div className="flex-1 gap-4 flex flex-col overflow-y-scroll">
+          <div className="flex flex-col">
             <label className="text-default-600 w-max font-semibold text-sm">
-              Selecione abaixo*:
+              Área
+            </label>
+            <input
+              className="w-full rounded-xl text-[16px] border-2 border-[#123262] h-12 px-4 focus:outline-none placeholder:text-default-400"
+              placeholder="INSIRA SEU EMAIL"
+              onChange={(e) =>
+                setFormData({ ...formData, area: Number(e.target.value) })
+              }
+              value={Number(formData.area)}
+              type="number"
+            />
+          </div>
+          <div className="flex flex-col">
+            <label className="text-default-600 w-max font-semibold text-sm">
+              Quantidade de Pavimentos
             </label>
             <label
               onClick={() => {
@@ -47,7 +39,7 @@ export function Step4() {
                 }
               }}
               className={cn(
-                "w-full flex items-center gap-2 rounded-xl border-2 h-12 px-4 relative transition duration-150",
+                "w-full flex items-center gap-2 my-2 rounded-xl border-2 h-12 px-4 relative transition duration-150",
                 formData.numberOfFloors === 1 && "border-[#123262] shadow-lg"
               )}
             >
@@ -75,7 +67,7 @@ export function Step4() {
                 }
               }}
               className={cn(
-                "w-full flex items-center gap-2 rounded-xl border-2 h-12 px-4 relative transition duration-150",
+                "w-full flex items-center gap-2 my-2 rounded-xl border-2 h-12 px-4 relative transition duration-150",
                 formData.numberOfFloors === 2 && "border-[#123262] shadow-lg"
               )}
             >
@@ -103,7 +95,7 @@ export function Step4() {
                 }
               }}
               className={cn(
-                "w-full flex items-center gap-2 rounded-xl border-2 h-12 px-4 relative transition duration-150",
+                "w-full flex items-center gap-2 my-2 rounded-xl border-2 h-12 px-4 relative transition duration-150",
                 formData.numberOfFloors === 3 && "border-[#123262] shadow-lg"
               )}
             >
@@ -131,7 +123,7 @@ export function Step4() {
                 }
               }}
               className={cn(
-                "w-full flex items-center gap-2 rounded-xl border-2 h-12 px-4 relative transition duration-150",
+                "w-full flex items-center gap-2 my-2 rounded-xl border-2 h-12 px-4 relative transition duration-150",
                 formData.numberOfFloors === 4 && "border-[#123262] shadow-lg"
               )}
             >
@@ -159,7 +151,7 @@ export function Step4() {
                 }
               }}
               className={cn(
-                "w-full flex items-center gap-2 rounded-xl border-2 h-12 px-4 relative transition duration-150",
+                "w-full flex items-center gap-2 my-2 rounded-xl border-2 h-12 px-4 relative transition duration-150",
                 formData.numberOfFloors === 5 && "border-[#123262] shadow-lg"
               )}
             >
@@ -178,9 +170,93 @@ export function Step4() {
               </div>
               <span className="text-[#123262] text-bold">TÉRREO + 4</span>
             </label>
+            <label
+              onClick={() => {
+                if (formData.numberOfFloors === 6) {
+                  setFormData({ ...formData, numberOfFloors: null });
+                } else {
+                  setFormData({ ...formData, numberOfFloors: 6 });
+                }
+              }}
+              className={cn(
+                "w-full flex items-center gap-2 my-2 rounded-xl border-2 h-12 px-4 relative transition duration-150",
+                formData.numberOfFloors === 6 && "border-[#123262] shadow-lg"
+              )}
+            >
+              <div
+                className={cn(
+                  "w-5 h-5 border rounded-full flex items-center justify-center",
+                  formData.numberOfFloors === 6 && "border-none"
+                )}
+              >
+                <div
+                  className={cn(
+                    "opacity-0 w-4 h-4 rounded-full bg-[#123262] transition duration-150",
+                    formData.numberOfFloors === 6 && "opacity-100"
+                  )}
+                />
+              </div>
+              <span className="text-[#123262] text-bold">TÉRREO + 5</span>
+            </label>
+            <label
+              onClick={() => {
+                if (formData.numberOfFloors === 7) {
+                  setFormData({ ...formData, numberOfFloors: null });
+                } else {
+                  setFormData({ ...formData, numberOfFloors: 7 });
+                }
+              }}
+              className={cn(
+                "w-full flex items-center gap-2 my-2 rounded-xl border-2 h-12 px-4 relative transition duration-150",
+                formData.numberOfFloors === 7 && "border-[#123262] shadow-lg"
+              )}
+            >
+              <div
+                className={cn(
+                  "w-5 h-5 border rounded-full flex items-center justify-center",
+                  formData.numberOfFloors === 7 && "border-none"
+                )}
+              >
+                <div
+                  className={cn(
+                    "opacity-0 w-4 h-4 rounded-full bg-[#123262] transition duration-150",
+                    formData.numberOfFloors === 7 && "opacity-100"
+                  )}
+                />
+              </div>
+              <span className="text-[#123262] text-bold">TÉRREO + 6</span>
+            </label>
+            <label
+              onClick={() => {
+                if (formData.numberOfFloors === 8) {
+                  setFormData({ ...formData, numberOfFloors: null });
+                } else {
+                  setFormData({ ...formData, numberOfFloors: 8 });
+                }
+              }}
+              className={cn(
+                "w-full flex items-center gap-2 my-2 rounded-xl border-2 h-12 px-4 relative transition duration-150",
+                formData.numberOfFloors === 8 && "border-[#123262] shadow-lg"
+              )}
+            >
+              <div
+                className={cn(
+                  "w-5 h-5 border rounded-full flex items-center justify-center",
+                  formData.numberOfFloors === 8 && "border-none"
+                )}
+              >
+                <div
+                  className={cn(
+                    "opacity-0 w-4 h-4 rounded-full bg-[#123262] transition duration-150",
+                    formData.numberOfFloors === 8 && "opacity-100"
+                  )}
+                />
+              </div>
+              <span className="text-[#123262] text-bold">TÉRREO + 7</span>
+            </label>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }

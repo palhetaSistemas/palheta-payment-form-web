@@ -25,27 +25,6 @@ export function Step3() {
   return (
     <div className="flex flex-col gap-8 w-full">
       <div className="flex flex-col gap-2">
-        <span className="font-bold text-lg text-[#123262]">
-          DADOS PARA APLICATIVO
-        </span>
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-col">
-            <label className="text-default-600 w-max font-semibold text-sm">
-              E-Mail*
-            </label>
-            <input
-              className="w-full rounded-xl text-[16px] border-2 border-[#123262] h-12 px-4 focus:outline-none placeholder:text-default-400"
-              placeholder="INSIRA SEU EMAIL"
-              onChange={(e) =>
-                setFormData({ ...formData, email: e.target.value })
-              }
-              value={formData.email}
-              type="email"
-            />
-          </div>
-        </div>
-      </div>
-      <div className="flex flex-col gap-2">
         <span className="font-bold text-lg text-[#123262]">SERVIÇOS</span>
         <div className="flex flex-col gap-4">
           <label className="text-default-600 w-max font-semibold text-sm">
