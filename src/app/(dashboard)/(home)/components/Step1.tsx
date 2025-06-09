@@ -7,9 +7,9 @@ export function Step1() {
   const { formData, setFormData } = useFormContext();
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col h-40 gap-4">
       <div className="flex flex-col">
-        <label className="text-default-600 w-max font-semibold text-sm">
+        <label className="text-default-600 mb-4 w-max font-semibold text-sm">
           Seu CNPJ ou CPF*
         </label>
         <input

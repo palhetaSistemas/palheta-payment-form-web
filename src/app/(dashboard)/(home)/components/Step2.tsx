@@ -220,7 +220,10 @@ export function Step2() {
                   return 0;
                 }}
               >
-                <CommandInput placeholder="Pesquisar..." />
+                <CommandInput
+                  placeholder="Pesquisar..."
+                  className="text-[16px]"
+                />
                 <CommandEmpty>Não encontrado.</CommandEmpty>
                 <CommandGroup>
                   <ScrollArea
@@ -277,7 +280,10 @@ export function Step2() {
                   return 0;
                 }}
               >
-                <CommandInput placeholder="Pesquisar..." />
+                <CommandInput
+                  placeholder="Pesquisar..."
+                  className="text-[16px]"
+                />
                 <CommandEmpty>Não encontrado.</CommandEmpty>
                 <CommandGroup>
                   <ScrollArea
