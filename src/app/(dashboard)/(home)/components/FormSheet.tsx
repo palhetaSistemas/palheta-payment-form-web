@@ -1,5 +1,6 @@
 "use client";
 import { Sheet, SheetContent } from "@/src/components/ui/sheet";
+import { useApiContext } from "@/src/context/ApiContext";
 import { useFormContext } from "@/src/context/Contex";
 import { cn } from "@/src/lib/utils";
 import { ArrowLeft } from "lucide-react";
@@ -24,10 +25,10 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const [allowNextStep, setAllowNextStep] = useState(false);
   const [isIphone, setIsIphone] = useState(false);
-
+  console.log("formData", formData);
   const HandleNextStep = () => {
     if (currentStep === 0) {
-      if (formData.name === "" || formData.email === "") {
+      if (formData.name === "" || !formData.email.includes("@")) {
         return toast.error("Insira seu nome e email");
       } else {
         return setCurrentStep(currentStep + 1);
@@ -60,6 +61,7 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
       if (formData.expectedCapacity === null) {
         return toast.error("Selecione a capacidade esperada");
       } else {
+        handlePostForm();
         return setCurrentStep(currentStep + 1);
       }
     } else if (currentStep === 6) {
@@ -115,7 +117,63 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
       if (isIphonee) setIsIphone(true);
     }
   }, []);
+  const { PostAPI } = useApiContext();
+  const floors: Record<number, string> = {
+    1: "TERREO",
+    2: "TERREO + 1",
+    3: "TERREO + 2",
+    4: "TERREO + 3",
+    5: "TERREO + 4",
+    6: "TERREO + 5",
+    7: "TERREO + 6",
+    // se tiver mais, basta ir adicionando
+  };
+  async function handlePostForm() {
+    try {
+      console.log("formData", formData);
 
+      const treatedData = {
+        clientId: "client_001",
+        projectId: "project_001",
+        name: formData.name,
+        email: formData.email,
+        cpfCnpj: formData.cpfCnpj,
+        postalCode: formData.zipCode,
+        address: formData.street,
+        number: formData.number,
+        neighborhood: formData.neighborhood,
+        city: formData.city,
+        state: formData.state,
+        architectureProject:
+          formData.services?.includes("PROJETO ARQUITETÔNICO") || false,
+        socialMediaContent:
+          formData.services?.includes("3D E MÍDIAS PARA REDES SOCIAIS") ||
+          false,
+        complementarProjects:
+          formData.services?.includes("PROJETOS COMPLEMENTARES") || false,
+        area: `${formData.area}m²`,
+        flooring:
+          formData.numberOfFloors !== null
+            ? floors[formData.numberOfFloors]
+            : "",
+        capacity: formData.expectedCapacity
+          ? `${formData.expectedCapacity} pessoas`
+          : "",
+        contractUrl:
+          "https://www.planura.mg.leg.br/imagens/teste.jpg/image_preview",
+        // formData.contractUrl ?? "",
+      };
+      console.log("treatedData", treatedData);
+      const response = await PostAPI("/contract", treatedData, true);
+      console.log("response", response);
+      if (response.status === 200) {
+        toast.success("Formulário enviado com sucesso!");
+      }
+    } catch (error) {
+      toast.error(`Ops! algo deu errado, tente novamente,: ${error}`);
+      console.log("erro", error);
+    }
+  }
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetContent

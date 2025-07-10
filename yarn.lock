@@ -9672,6 +9672,13 @@ next-auth@^4.24.5:
     preact-render-to-string "^5.1.19"
     uuid "^8.3.2"
 
+next-client-cookies@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/next-client-cookies/-/next-client-cookies-2.1.0.tgz#e725e21266b5c0ca08741edf50f0a3db471d255e"
+  integrity sha512-kC4xPjPi4H+n2qhMNfArG++FTg0fPe7eykJ2o15hbVudHMvMpXMmZYvnqHaCnisTZuRl1DqZPlwwercO1r5jDA==
+  dependencies:
+    js-cookie "^3.0.5"
+
 next-mdx-remote@^4.2.1:
   version "4.4.1"
   resolved "https://registry.yarnpkg.com/next-mdx-remote/-/next-mdx-remote-4.4.1.tgz#96b16e2adc54dbcd0a7f204a9a3c3fd269d41abf"
