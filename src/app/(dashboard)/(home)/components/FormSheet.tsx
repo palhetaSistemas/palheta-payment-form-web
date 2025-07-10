@@ -128,13 +128,21 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
     7: "TERREO + 6",
     // se tiver mais, basta ir adicionando
   };
+  const capacity: Record<number, string> = {
+    0: "ENTRE 100 E 200 PESSOAS",
+    1: "ATÉ 400 PESSOAS",
+    2: "ENTRE 500 E 900 PESSOAS",
+    3: "ENTRE 1000 E 2000 PESSOAS",
+    4: "ENTRE 3000 E 5000 PESSOAS",
+    // se tiver mais, basta ir adicionando
+  };
   async function handlePostForm() {
     try {
       console.log("formData", formData);
 
       const treatedData = {
-        clientId: "client_001",
-        projectId: "project_001",
+        clientId: "4e73a9b9-1ea5-4b49-a742-260e1968a0fa",
+        projectId: "d8aa5c14-e7c6-4112-8a43-962cb231f978",
         name: formData.name,
         email: formData.email,
         cpfCnpj: formData.cpfCnpj,
@@ -156,9 +164,10 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
           formData.numberOfFloors !== null
             ? floors[formData.numberOfFloors]
             : "",
-        capacity: formData.expectedCapacity
-          ? `${formData.expectedCapacity} pessoas`
-          : "",
+        capacity:
+          formData.expectedCapacity !== null
+            ? capacity[formData.expectedCapacity]
+            : "",
         contractUrl:
           "https://www.planura.mg.leg.br/imagens/teste.jpg/image_preview",
         // formData.contractUrl ?? "",
