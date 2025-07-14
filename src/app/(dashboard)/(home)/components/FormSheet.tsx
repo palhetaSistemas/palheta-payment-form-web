@@ -4,6 +4,7 @@ import { useApiContext } from "@/src/context/ApiContext";
 import { useFormContext } from "@/src/context/Contex";
 import { cn } from "@/src/lib/utils";
 import { ArrowLeft } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Step0 } from "./Step0";
@@ -19,7 +20,18 @@ interface FormSheetProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
-
+export interface FormDataProps {
+  clientId: string;
+  totalTax: number;
+  userId: string;
+  duration: number;
+  monthlyFee: number;
+  discountedOffer: number;
+  paidOffer: number;
+  upfrontRate: number;
+  reserverFundRate: number;
+  creditValue: number;
+}
 export function FormSheet({ open, setOpen }: FormSheetProps) {
   const { formData } = useFormContext();
   const [currentStep, setCurrentStep] = useState(0);
@@ -61,10 +73,10 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
       if (formData.expectedCapacity === null) {
         return toast.error("Selecione a capacidade esperada");
       } else {
-        handlePostForm();
         return setCurrentStep(currentStep + 1);
       }
     } else if (currentStep === 6) {
+      handlePostForm();
       return setCurrentStep(currentStep + 1);
     }
   };
@@ -136,13 +148,17 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
     4: "ENTRE 3000 E 5000 PESSOAS",
     // se tiver mais, basta ir adicionando
   };
+  const searchParams = useSearchParams();
+
+  const clientId = searchParams.get("clientId");
+  const projectId = searchParams.get("projectId");
   async function handlePostForm() {
     try {
       console.log("formData", formData);
 
       const treatedData = {
-        clientId: "4e73a9b9-1ea5-4b49-a742-260e1968a0fa",
-        projectId: "d8aa5c14-e7c6-4112-8a43-962cb231f978",
+        clientId: clientId,
+        projectId: projectId,
         name: formData.name,
         email: formData.email,
         cpfCnpj: formData.cpfCnpj,
@@ -168,8 +184,7 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
           formData.expectedCapacity !== null
             ? capacity[formData.expectedCapacity]
             : "",
-        contractUrl:
-          "https://www.planura.mg.leg.br/imagens/teste.jpg/image_preview",
+        contractUrl: formData.contractUrl,
         // formData.contractUrl ?? "",
       };
       console.log("treatedData", treatedData);
@@ -204,7 +219,8 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
         )}
         {currentStep === 0 ? (
           <Step0 />
-        ) : currentStep === 1 ? (
+        ) : // <Step0 />
+        currentStep === 1 ? (
           <Step1 />
         ) : currentStep === 2 ? (
           <Step2 />
@@ -223,6 +239,7 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
         )}
         <button
           onClick={HandleNextStep}
+          onKeyDown={(e) => e.key === "Enter" && HandleNextStep()}
           className={cn(
             "w-full h-12 bg-gradient-to-b from-[#123262dd] to-[#123262] shadow-md border border-[#123262] text-white font-bold text-lg rounded-xl transition duration-300",
             !allowNextStep && "opacity-50 cursor-not-allowed"

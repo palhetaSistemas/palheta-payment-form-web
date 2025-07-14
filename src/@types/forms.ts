@@ -12,6 +12,7 @@ export interface FormProps {
   city: string;
   email: string;
   services: string[] | null;
+  contractUrl: string | null;
   selectedDate: {
     date: string | null;
     time: string | null;
