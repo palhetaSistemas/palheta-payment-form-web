@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
   },
-  section: { marginTop: 16, flexDirection: "column" },
+  section: { marginTop: 12, flexDirection: "column" },
   h1: {
     color: colors.primary,
     fontFamily: "Helvetica-Bold",
