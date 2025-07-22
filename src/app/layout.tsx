@@ -5,6 +5,7 @@ import TanstackProvider from "@/src/provider/providers.client";
 import "flatpickr/dist/themes/light.css";
 import moment from "moment";
 import "moment/locale/pt-br";
+import { CookiesProvider } from "next-client-cookies/server";
 import { Poppins } from "next/font/google";
 import "simplebar-react/dist/simplebar.min.css";
 import { FormContextProvider } from "../context/Contex";
@@ -34,15 +35,17 @@ export default function RootLayout({
 }) {
   return (
     <html className={poppins.className} lang={lang}>
-      <AuthProvider>
-        <TanstackProvider>
-          <Providers>
-            <DirectionProvider lang={lang}>
-              <FormContextProvider>{children}</FormContextProvider>
-            </DirectionProvider>
-          </Providers>
-        </TanstackProvider>
-      </AuthProvider>
+      <CookiesProvider>
+        <AuthProvider>
+          <TanstackProvider>
+            <Providers>
+              <DirectionProvider lang={lang}>
+                <FormContextProvider>{children}</FormContextProvider>
+              </DirectionProvider>
+            </Providers>
+          </TanstackProvider>
+        </AuthProvider>
+      </CookiesProvider>
     </html>
   );
 }
