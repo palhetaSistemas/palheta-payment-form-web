@@ -19,6 +19,8 @@ import { Step7 } from "./Step7";
 interface FormSheetProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  isCompleted: boolean;
+  setIsCompleted: React.Dispatch<React.SetStateAction<boolean>>;
 }
 export interface FormDataProps {
   clientId: string;
@@ -32,12 +34,42 @@ export interface FormDataProps {
   reserverFundRate: number;
   creditValue: number;
 }
-export function FormSheet({ open, setOpen }: FormSheetProps) {
+export function FormSheet({
+  open,
+  setOpen,
+  isCompleted,
+  setIsCompleted,
+}: FormSheetProps) {
   const { formData } = useFormContext();
+  const { PostAPI } = useApiContext();
+  const searchParams = useSearchParams();
   const [currentStep, setCurrentStep] = useState(0);
   const [allowNextStep, setAllowNextStep] = useState(false);
   const [isIphone, setIsIphone] = useState(false);
-  console.log("formData", formData);
+  const [isSending, setIsSending] = useState(false);
+
+  const clientId = searchParams.get("clientId");
+  const projectId = searchParams.get("projectId");
+
+  const floors: Record<number, string> = {
+    1: "TERREO",
+    2: "TERREO + 1",
+    3: "TERREO + 2",
+    4: "TERREO + 3",
+    5: "TERREO + 4",
+    6: "TERREO + 5",
+    7: "TERREO + 6",
+  };
+  const capacity: Record<number, string> = {
+    0: "ENTRE 100 E 200 PESSOAS",
+    1: "ATÉ 400 PESSOAS",
+    2: "ENTRE 500 E 900 PESSOAS",
+    3: "ENTRE 1000 E 2000 PESSOAS",
+    4: "ENTRE 3000 E 5000 PESSOAS",
+  };
+
+  console.log("isCompleted: ", isCompleted);
+
   const HandleNextStep = () => {
     if (currentStep === 0) {
       if (formData.name === "" || !formData.email.includes("@")) {
@@ -76,10 +108,53 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
         return setCurrentStep(currentStep + 1);
       }
     } else if (currentStep === 6) {
-      handlePostForm();
-      return setCurrentStep(currentStep + 1);
+      return handlePostForm();
+    } else if (currentStep === 7) {
+      return setOpen(false);
     }
   };
+
+  async function handlePostForm() {
+    setIsSending(true);
+    const treatedData = {
+      clientId: clientId,
+      projectId: projectId,
+      name: formData.name,
+      email: formData.email,
+      cpfCnpj: formData.cpfCnpj,
+      postalCode: formData.zipCode,
+      address: formData.street,
+      number: formData.number,
+      neighborhood: formData.neighborhood,
+      city: formData.city,
+      state: formData.state,
+      architectureProject:
+        formData.services?.includes("PROJETO ARQUITETÔNICO") || false,
+      socialMediaContent:
+        formData.services?.includes("3D E MÍDIAS PARA REDES SOCIAIS") || false,
+      complementarProjects:
+        formData.services?.includes("PROJETOS COMPLEMENTARES") || false,
+      area: `${formData.area}m²`,
+      flooring:
+        formData.numberOfFloors !== null ? floors[formData.numberOfFloors] : "",
+      capacity:
+        formData.expectedCapacity !== null
+          ? capacity[formData.expectedCapacity]
+          : "",
+      contractUrl: formData.contractUrl,
+      // formData.contractUrl ?? "",
+    };
+    const response = await PostAPI("/contract", treatedData, true);
+    console.log("response", response);
+    if (response.status === 200) {
+      toast.success("Formulário enviado com sucesso!");
+      setCurrentStep(currentStep + 1);
+      setIsCompleted(true);
+      return setIsSending(false);
+    }
+    toast.error(`Ops! algo deu errado, tente novamente`);
+    return setIsSending(false);
+  }
 
   useEffect(() => {
     if (currentStep === 0) {
@@ -120,6 +195,8 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
       }
     } else if (currentStep === 6) {
       setAllowNextStep(true);
+    } else if (currentStep === 7) {
+      setAllowNextStep(true);
     }
   }, [formData, currentStep]);
 
@@ -129,75 +206,7 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
       if (isIphonee) setIsIphone(true);
     }
   }, []);
-  const { PostAPI } = useApiContext();
-  const floors: Record<number, string> = {
-    1: "TERREO",
-    2: "TERREO + 1",
-    3: "TERREO + 2",
-    4: "TERREO + 3",
-    5: "TERREO + 4",
-    6: "TERREO + 5",
-    7: "TERREO + 6",
-    // se tiver mais, basta ir adicionando
-  };
-  const capacity: Record<number, string> = {
-    0: "ENTRE 100 E 200 PESSOAS",
-    1: "ATÉ 400 PESSOAS",
-    2: "ENTRE 500 E 900 PESSOAS",
-    3: "ENTRE 1000 E 2000 PESSOAS",
-    4: "ENTRE 3000 E 5000 PESSOAS",
-    // se tiver mais, basta ir adicionando
-  };
-  const searchParams = useSearchParams();
 
-  const clientId = searchParams.get("clientId");
-  const projectId = searchParams.get("projectId");
-  async function handlePostForm() {
-    try {
-      console.log("formData", formData);
-
-      const treatedData = {
-        clientId: clientId,
-        projectId: projectId,
-        name: formData.name,
-        email: formData.email,
-        cpfCnpj: formData.cpfCnpj,
-        postalCode: formData.zipCode,
-        address: formData.street,
-        number: formData.number,
-        neighborhood: formData.neighborhood,
-        city: formData.city,
-        state: formData.state,
-        architectureProject:
-          formData.services?.includes("PROJETO ARQUITETÔNICO") || false,
-        socialMediaContent:
-          formData.services?.includes("3D E MÍDIAS PARA REDES SOCIAIS") ||
-          false,
-        complementarProjects:
-          formData.services?.includes("PROJETOS COMPLEMENTARES") || false,
-        area: `${formData.area}m²`,
-        flooring:
-          formData.numberOfFloors !== null
-            ? floors[formData.numberOfFloors]
-            : "",
-        capacity:
-          formData.expectedCapacity !== null
-            ? capacity[formData.expectedCapacity]
-            : "",
-        contractUrl: formData.contractUrl,
-        // formData.contractUrl ?? "",
-      };
-      console.log("treatedData", treatedData);
-      const response = await PostAPI("/contract", treatedData, true);
-      console.log("response", response);
-      if (response.status === 200) {
-        toast.success("Formulário enviado com sucesso!");
-      }
-    } catch (error) {
-      toast.error(`Ops! algo deu errado, tente novamente,: ${error}`);
-      console.log("erro", error);
-    }
-  }
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetContent
@@ -219,8 +228,7 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
         )}
         {currentStep === 0 ? (
           <Step0 />
-        ) : // <Step0 />
-        currentStep === 1 ? (
+        ) : currentStep === 1 ? (
           <Step1 />
         ) : currentStep === 2 ? (
           <Step2 />
@@ -239,13 +247,14 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
         )}
         <button
           onClick={HandleNextStep}
+          disabled={isSending}
           onKeyDown={(e) => e.key === "Enter" && HandleNextStep()}
           className={cn(
             "w-full h-12 bg-gradient-to-b from-[#123262dd] to-[#123262] shadow-md border border-[#123262] text-white font-bold text-lg rounded-xl transition duration-300",
             !allowNextStep && "opacity-50 cursor-not-allowed"
           )}
         >
-          PRÓXIMO
+          {isCompleted ? "FINALIZAR" : "PRÓXIMO"}
         </button>
       </SheetContent>
     </Sheet>

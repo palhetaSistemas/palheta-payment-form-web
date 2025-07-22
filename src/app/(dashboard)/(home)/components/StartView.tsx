@@ -6,6 +6,7 @@ import { FormSheet } from "./FormSheet";
 export function StartView() {
   const [openFormSheet, setOpenFormSheet] = useState(false);
   const [isIphone, setIsIphone] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -36,23 +37,41 @@ export function StartView() {
             openFormSheet && "opacity-0"
           )}
         >
-          <span className="font-bold text-2xl text-center text-white">
-            VAMOS AO TRABALHO
-          </span>
-          <span className="text-white text-center">
-            PREENCHA O CONTRATO PARA INICIARMOS O TRABALHO
-          </span>
+          {isCompleted ? (
+            <>
+              <span className="font-bold text-2xl text-center text-white">
+                CONTRATO PREENCHIDO
+              </span>
+              <span className="text-white text-center">
+                AGUARDE UM PRÓXIMO CONTATO PARA INICIARMOS O TRABALHO
+              </span>
+            </>
+          ) : (
+            <>
+              <span className="font-bold text-2xl text-center text-white">
+                VAMOS AO TRABALHO
+              </span>
+              <span className="text-white text-center">
+                PREENCHA O CONTRATO PARA INICIARMOS O TRABALHO
+              </span>
+            </>
+          )}
         </div>
       </div>
       <button
         onClick={() => setOpenFormSheet(true)}
-        className={` absolute ${
+        className={`${isCompleted && "hidden"} absolute ${
           isIphone ? "bottom-40" : "bottom-10"
         }  mx-auto w-11/12 h-12 bg-white border border-[#123262] text-[#123262] font-bold text-lg rounded-lg `}
       >
         COMEÇAR
       </button>
-      <FormSheet open={openFormSheet} setOpen={setOpenFormSheet} />
+      <FormSheet
+        open={openFormSheet}
+        setOpen={setOpenFormSheet}
+        isCompleted={isCompleted}
+        setIsCompleted={setIsCompleted}
+      />
     </>
   );
 }
