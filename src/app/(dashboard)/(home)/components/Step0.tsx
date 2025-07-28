@@ -31,6 +31,7 @@ export function Step0() {
             placeholder="NOME / RAZÃO SOCIAL"
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             value={formData.name}
+            autoFocus
           />
         )}
       </div>

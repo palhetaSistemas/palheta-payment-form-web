@@ -42,14 +42,14 @@ export function FormSheet({
 }: FormSheetProps) {
   const { formData } = useFormContext();
   const { PostAPI } = useApiContext();
-  const searchParams = useSearchParams();
+  const params = useSearchParams();
   const [currentStep, setCurrentStep] = useState(0);
   const [allowNextStep, setAllowNextStep] = useState(false);
   const [isIphone, setIsIphone] = useState(false);
   const [isSending, setIsSending] = useState(false);
 
-  const clientId = searchParams.get("clientId");
-  const projectId = searchParams.get("projectId");
+  const clientId = params.get("clientId");
+  const projectId = params.get("projectId");
 
   const floors: Record<number, string> = {
     1: "TERREO",
@@ -67,8 +67,6 @@ export function FormSheet({
     3: "ENTRE 1000 E 2000 PESSOAS",
     4: "ENTRE 3000 E 5000 PESSOAS",
   };
-
-  console.log("isCompleted: ", isCompleted);
 
   const HandleNextStep = () => {
     if (currentStep === 0) {
@@ -217,6 +215,7 @@ export function FormSheet({
           isIphone && " ",
           isIphone && currentStep === 4 && "  h-[80vh]"
         )}
+        onKeyDown={(e) => e.key === "Enter" && HandleNextStep()}
       >
         {currentStep > 0 && (
           <ArrowLeft

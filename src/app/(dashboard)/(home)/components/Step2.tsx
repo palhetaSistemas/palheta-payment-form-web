@@ -135,6 +135,7 @@ export function Step2() {
             }
             value={formData.zipCode}
             maxLength={9}
+            autoFocus
           />
         </div>
         <div className="flex flex-col w-1/2">

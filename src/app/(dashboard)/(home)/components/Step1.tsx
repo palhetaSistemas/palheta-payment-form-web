@@ -20,6 +20,7 @@ export function Step1() {
           }
           value={formData.cpfCnpj}
           maxLength={18}
+          autoFocus
         />
       </div>
     </div>

@@ -1,10 +1,8 @@
 "use client";
-import Image from "next/image";
-import lightImage from "@/public/images/error/light-404.png";
 import darkImage from "@/public/images/error/dark-404.png";
-import { Button } from "@/src/components/ui/button";
-import Link from "next/link";
+import lightImage from "@/public/images/error/light-404.png";
 import { useTheme } from "next-themes";
+import Image from "next/image";
 const ErrorBlock = () => {
   const { theme } = useTheme();
   return (
@@ -18,16 +16,12 @@ const ErrorBlock = () => {
           />
         </div>
         <div className="mt-16 text-center">
-          <div className="text-2xl md:text-4xl lg:text-5xl font-semibold text-default-900">
-            Ops! Page Not Found
+          <div className="text-2xl md:text-4xl lg:text-5xl font-semibold text-white">
+            Ops! Página não encontrada
           </div>
-          <div className="mt-3 text-default-600 text-sm md:text-base">
-            The page you are looking for might have been removed had <br /> its
-            name changed or is temporarily unavailable.
+          <div className="mt-3 text-white text-sm md:text-base">
+            Verifique a URL enviada pela nossa Equipe e tente novamente
           </div>
-          <Button asChild className="mt-9  md:min-w-[300px]" size="lg">
-            <Link href="/dashboard">Go to Homepage</Link>
-          </Button>
         </div>
       </div>
     </div>
