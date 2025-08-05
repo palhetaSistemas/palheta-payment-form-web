@@ -22,7 +22,7 @@ export function Step4() {
               onChange={(e) =>
                 setFormData({ ...formData, area: Number(e.target.value) })
               }
-              value={Number(formData.area)}
+              value={Number(formData.area).toString()}
               type="number"
               autoFocus
             />
