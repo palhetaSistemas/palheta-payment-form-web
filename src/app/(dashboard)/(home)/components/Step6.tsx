@@ -4,34 +4,58 @@ import { useApiContext } from "@/src/context/ApiContext";
 import { useFormContext } from "@/src/context/Contex";
 import { pdf, PDFViewer } from "@react-pdf/renderer";
 import { useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { mapTreatedData, PalhetaContract } from "./Pdf";
+import { SignatureModal } from "./SignatureModal";
 
-export function Step6() {
+// -----------------------------
+// Modal de assinatura (mouse/touch)
+// -----------------------------
+
+// -----------------------------
+// STEP 6
+// -----------------------------
+interface Props {
+  uploadContract: boolean;
+  setUploadContract: React.Dispatch<React.SetStateAction<boolean>>;
+  setHasUploaded: React.Dispatch<React.SetStateAction<boolean>>;
+}
+export function Step6({
+  uploadContract,
+  setUploadContract,
+  setHasUploaded,
+}: Props) {
   const { formData, setFormData } = useFormContext();
   const { PostAPI } = useApiContext();
-  const floors: Record<number, string> = {
-    1: "TERREO",
-    2: "TERREO + 1",
-    3: "TERREO + 2",
-    4: "TERREO + 3",
-    5: "TERREO + 4",
-    6: "TERREO + 5",
-    7: "TERREO + 6",
-    // se tiver mais, basta ir adicionando
-  };
-  const capacity: Record<number, string> = {
-    0: "ENTRE 100 E 200 PESSOAS",
-    1: "ATÉ 400 PESSOAS",
-    2: "ENTRE 500 E 900 PESSOAS",
-    3: "ENTRE 1000 E 2000 PESSOAS",
-    4: "ENTRE 3000 E 5000 PESSOAS",
-    // se tiver mais, basta ir adicionando
-  };
-  const searchParams = useSearchParams();
+  const [signOpen, setSignOpen] = useState(false);
 
+  const searchParams = useSearchParams();
   const clientId = searchParams.get("clientId");
   const projectId = searchParams.get("projectId");
+
+  const floors: Record<number, string> = useMemo(
+    () => ({
+      1: "TERREO",
+      2: "TERREO + 1",
+      3: "TERREO + 2",
+      4: "TERREO + 3",
+      5: "TERREO + 4",
+      6: "TERREO + 5",
+      7: "TERREO + 6",
+    }),
+    []
+  );
+
+  const capacity: Record<number, string> = useMemo(
+    () => ({
+      0: "ENTRE 100 E 200 PESSOAS",
+      1: "ATÉ 400 PESSOAS",
+      2: "ENTRE 500 E 900 PESSOAS",
+      3: "ENTRE 1000 E 2000 PESSOAS",
+      4: "ENTRE 3000 E 5000 PESSOAS",
+    }),
+    []
+  );
 
   const treatedData = {
     clientId: clientId,
@@ -59,63 +83,90 @@ export function Step6() {
         ? capacity[formData.expectedCapacity]
         : "",
     contractUrl:
+      formData.contractUrl ??
       "https://www.planura.mg.leg.br/imagens/teste.jpg/image_preview",
-    // formData.contractUrl ?? "",
-  };
+    // NOVO: assinatura como dataURL (base64) vinda do modal
+    signatureUrl: (formData as any).signatureUrl || null,
+  } as any;
 
   const contratoProps = mapTreatedData(treatedData, {
-    // preencha apenas se já tiver essas infos
     valorTotal: 15000,
     formasPagamento: "30 % na assinatura + 70 % na entrega",
     responsavel: "Edi Palheta",
   });
+
   async function uploadPdf(blob: Blob) {
-    console.log("formDataCTT", formData.contractUrl);
-    if (formData.contractUrl !== null) return;
+    if (formData.contractUrl !== null && formData.contractUrl !== undefined)
+      return;
 
     const docFormData = new FormData();
     docFormData.append("file", blob, "Contrato-Palheta.pdf");
     try {
       const response = await PostAPI("/file", docFormData, true);
-      console.log("response", response);
       if (response.status === 200) {
-        console.log("response", response.body.url);
         setFormData({ ...formData, contractUrl: response.body.fullUrl });
         console.log("Arquivo enviado com sucesso!");
+        setUploadContract(false);
+        setHasUploaded(true);
       }
     } catch (error) {
       console.log("error", error);
     }
   }
+
   async function handleSend() {
-    // 1. Monte as props (use mapTreatedData ou qualquer fonte)
-    const contratoProps = mapTreatedData(treatedData);
-
-    // 2. Gere o Blob
-    const blob = await pdf(<PalhetaContract {...contratoProps} />).toBlob();
-
-    // 3. Envie para a API
+    // monta as props (já contendo signatureUrl quando houver)
+    const contratoPropsLocal = mapTreatedData(treatedData);
+    const blob = await pdf(
+      <PalhetaContract {...contratoPropsLocal} />
+    ).toBlob();
     await uploadPdf(blob);
   }
   useEffect(() => {
-    if (formData.contractUrl) return;
-    handleSend();
-  }, []);
+    if (uploadContract) {
+      handleSend();
+    }
+  }, [uploadContract]);
+
+  // Confirmação do modal
+  const onConfirmSignature = (dataUrl: string) => {
+    console.log("dataUrl", dataUrl);
+    setFormData({ ...formData, signatureUrl: dataUrl } as any);
+    setSignOpen(false);
+  };
+
   return (
     <>
-      <span className="font-bold text-lg text-[#123262] mx-auto w-max">
+      <span className="mx-auto w-max text-lg font-bold text-[#123262]">
         CONTRATO
       </span>
-      <div className="w-full h-[400px] lg:h-[600px] bg-default-300 rounded-lg">
-        {/* <PDFDownloadLink
-          document={<PalhetaContract {...contratoProps} />}
-          fileName="recipe.pdf"
-          className="border-primary border  font-semibold flex items-center justify-center w-full h-full  gap-2 px-2 py-1 rounded-md"
-        ></PDFDownloadLink> */}
+
+      {/* Ações */}
+
+      {/* Visualização do PDF */}
+      <div className="mt-3 h-[400px] w-full rounded-lg bg-default-300 lg:h-[600px]">
         <PDFViewer width="100%" height="100%">
           <PalhetaContract {...contratoProps} />
         </PDFViewer>
       </div>
+      <div className="mt-3 flex items-center w-full justify-end gap-3">
+        <button
+          onClick={() => setSignOpen(true)}
+          className="rounded-xl bg-[#123262] px-4 py-2 text-sm font-semibold text-white hover:opacity-90"
+        >
+          Assinar contrato
+        </button>
+        {(formData as any).signature && (
+          <span className="text-xs text-green-700">
+            Assinatura adicionada ✓
+          </span>
+        )}
+      </div>
+      <SignatureModal
+        open={signOpen}
+        onClose={() => setSignOpen(false)}
+        onConfirm={onConfirmSignature}
+      />
     </>
   );
 }

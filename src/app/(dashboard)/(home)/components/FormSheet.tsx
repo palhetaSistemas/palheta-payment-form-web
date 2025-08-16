@@ -37,6 +37,8 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const [allowNextStep, setAllowNextStep] = useState(false);
   const [isIphone, setIsIphone] = useState(false);
+  const [uploadContract, setUploadContract] = useState(false);
+  const [hasUploaded, setHasUploaded] = useState(false);
   console.log("formData", formData);
   const HandleNextStep = () => {
     if (currentStep === 0) {
@@ -76,11 +78,13 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
         return setCurrentStep(currentStep + 1);
       }
     } else if (currentStep === 6) {
-      handlePostForm();
-      return setCurrentStep(currentStep + 1);
+      setUploadContract(true);
+      return;
     }
   };
-
+  useEffect(() => {
+    handlePostForm();
+  }, [hasUploaded]);
   useEffect(() => {
     if (currentStep === 0) {
       if (formData.name === "" || formData.email === "") {
@@ -185,6 +189,7 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
             ? capacity[formData.expectedCapacity]
             : "",
         contractUrl: formData.contractUrl,
+
         // formData.contractUrl ?? "",
       };
       console.log("treatedData", treatedData);
@@ -192,6 +197,7 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
       console.log("response", response);
       if (response.status === 200) {
         toast.success("Formulário enviado com sucesso!");
+        setCurrentStep(currentStep + 1);
       }
     } catch (error) {
       toast.error(`Ops! algo deu errado, tente novamente,: ${error}`);
@@ -231,7 +237,11 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
         ) : currentStep === 5 ? (
           <Step5 />
         ) : currentStep === 6 ? (
-          <Step6 />
+          <Step6
+            uploadContract={uploadContract}
+            setHasUploaded={setHasUploaded}
+            setUploadContract={setUploadContract}
+          />
         ) : currentStep === 7 ? (
           <Step7 />
         ) : (
