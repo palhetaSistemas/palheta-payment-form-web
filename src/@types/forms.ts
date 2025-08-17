@@ -8,6 +8,7 @@ export interface FormProps {
   expectedCapacity: number | null;
   area: number | null;
   numberOfFloors: number | null;
+  signatureUrl: string | null;
   state: string;
   city: string;
   email: string;

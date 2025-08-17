@@ -30,6 +30,7 @@ export const FormContextProvider = ({ children }: ProviderProps) => {
     email: "",
     services: [],
     contractUrl: null,
+    signatureUrl: null,
     selectedDate: {
       date: null,
       time: null,

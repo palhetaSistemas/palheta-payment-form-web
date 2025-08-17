@@ -189,6 +189,7 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
             ? capacity[formData.expectedCapacity]
             : "",
         contractUrl: formData.contractUrl,
+        hasSignature: formData.signatureUrl ? true : false,
 
         // formData.contractUrl ?? "",
       };
