@@ -3,7 +3,7 @@ import { Sheet, SheetContent } from "@/src/components/ui/sheet";
 import { useApiContext } from "@/src/context/ApiContext";
 import { useFormContext } from "@/src/context/Contex";
 import { cn } from "@/src/lib/utils";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Loader2 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -15,6 +15,7 @@ import { Step4 } from "./Step4";
 import { Step5 } from "./Step5";
 import { Step6 } from "./Step6";
 import { Step7 } from "./Step7";
+import { Step8 } from "./Step8";
 
 interface FormSheetProps {
   open: boolean;
@@ -78,12 +79,16 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
         return setCurrentStep(currentStep + 1);
       }
     } else if (currentStep === 6) {
+      return setCurrentStep(currentStep + 1);
+    } else if (currentStep === 7) {
+      console.log("clicado");
       setUploadContract(true);
-      return;
     }
   };
   useEffect(() => {
-    handlePostForm();
+    if (hasUploaded) {
+      handlePostForm();
+    }
   }, [hasUploaded]);
   useEffect(() => {
     if (currentStep === 0) {
@@ -124,6 +129,8 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
       }
     } else if (currentStep === 6) {
       setAllowNextStep(true);
+    } else if (currentStep === 7) {
+      setAllowNextStep(true);
     }
   }, [formData, currentStep]);
 
@@ -156,7 +163,9 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
 
   const clientId = searchParams.get("clientId");
   const projectId = searchParams.get("projectId");
+  const [isLoading, setIsLoading] = useState(false);
   async function handlePostForm() {
+    setIsLoading(true);
     try {
       console.log("formData", formData);
 
@@ -189,9 +198,8 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
             ? capacity[formData.expectedCapacity]
             : "",
         contractUrl: formData.contractUrl,
-        hasSignature: formData.signatureUrl ? true : false,
-
-        // formData.contractUrl ?? "",
+        installmentCount: formData.installmentCount?.toString(),
+        hasSigned: formData.signatureUrl ? true : false,
       };
       console.log("treatedData", treatedData);
       const response = await PostAPI("/contract", treatedData, true);
@@ -203,6 +211,8 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
     } catch (error) {
       toast.error(`Ops! algo deu errado, tente novamente,: ${error}`);
       console.log("erro", error);
+    } finally {
+      setIsLoading(false);
     }
   }
   return (
@@ -238,25 +248,25 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
         ) : currentStep === 5 ? (
           <Step5 />
         ) : currentStep === 6 ? (
-          <Step6
+          <Step6 />
+        ) : currentStep === 7 ? (
+          <Step7
             uploadContract={uploadContract}
             setHasUploaded={setHasUploaded}
             setUploadContract={setUploadContract}
           />
-        ) : currentStep === 7 ? (
-          <Step7 />
         ) : (
-          <></>
+          <Step8 />
         )}
         <button
           onClick={HandleNextStep}
           onKeyDown={(e) => e.key === "Enter" && HandleNextStep()}
           className={cn(
-            "w-full h-12 bg-gradient-to-b from-[#123262dd] to-[#123262] shadow-md border border-[#123262] text-white font-bold text-lg rounded-xl transition duration-300",
+            "w-full h-12 bg-gradient-to-b flex items-center justify-center from-[#123262dd] to-[#123262] shadow-md border border-[#123262] text-white font-bold text-lg rounded-xl transition duration-300",
             !allowNextStep && "opacity-50 cursor-not-allowed"
           )}
         >
-          PRÓXIMO
+          {isLoading ? <Loader2 className="animate-spin" /> : "PRÓXIMO"}
         </button>
       </SheetContent>
     </Sheet>

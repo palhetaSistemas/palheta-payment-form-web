@@ -29,6 +29,7 @@ export const FormContextProvider = ({ children }: ProviderProps) => {
     city: "",
     email: "",
     services: [],
+    installmentCount: null,
     contractUrl: null,
     signatureUrl: null,
     selectedDate: {
