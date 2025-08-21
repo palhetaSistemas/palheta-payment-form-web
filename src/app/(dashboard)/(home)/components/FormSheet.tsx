@@ -15,6 +15,7 @@ import { Step4 } from "./Step4";
 import { Step5 } from "./Step5";
 import { Step6 } from "./Step6";
 import { Step7 } from "./Step7";
+import { Step8 } from "./Step8";
 
 interface FormSheetProps {
   open: boolean;
@@ -46,6 +47,8 @@ export function FormSheet({
   const [currentStep, setCurrentStep] = useState(0);
   const [allowNextStep, setAllowNextStep] = useState(false);
   const [isIphone, setIsIphone] = useState(false);
+  const [uploadContract, setUploadContract] = useState(false);
+  const [hasUploaded, setHasUploaded] = useState(false);
   const [isSending, setIsSending] = useState(false);
 
   const clientId = params.get("clientId");
@@ -106,54 +109,20 @@ export function FormSheet({
         return setCurrentStep(currentStep + 1);
       }
     } else if (currentStep === 6) {
-      return handlePostForm();
+      return setCurrentStep(currentStep + 1);
     } else if (currentStep === 7) {
-      return setOpen(false);
+      console.log("clicado");
+      return setUploadContract(true);
+    } else if (currentStep === 8) {
+      setOpen(false);
+      return setIsCompleted(true);
     }
   };
-
-  async function handlePostForm() {
-    setIsSending(true);
-    const treatedData = {
-      clientId: clientId,
-      projectId: projectId,
-      name: formData.name,
-      email: formData.email,
-      cpfCnpj: formData.cpfCnpj,
-      postalCode: formData.zipCode,
-      address: formData.street,
-      number: formData.number,
-      neighborhood: formData.neighborhood,
-      city: formData.city,
-      state: formData.state,
-      architectureProject:
-        formData.services?.includes("PROJETO ARQUITETÔNICO") || false,
-      socialMediaContent:
-        formData.services?.includes("3D E MÍDIAS PARA REDES SOCIAIS") || false,
-      complementarProjects:
-        formData.services?.includes("PROJETOS COMPLEMENTARES") || false,
-      area: `${formData.area}m²`,
-      flooring:
-        formData.numberOfFloors !== null ? floors[formData.numberOfFloors] : "",
-      capacity:
-        formData.expectedCapacity !== null
-          ? capacity[formData.expectedCapacity]
-          : "",
-      contractUrl: formData.contractUrl,
-      // formData.contractUrl ?? "",
-    };
-    const response = await PostAPI("/contract", treatedData, true);
-    console.log("response", response);
-    if (response.status === 200) {
-      toast.success("Formulário enviado com sucesso!");
-      setCurrentStep(currentStep + 1);
-      setIsCompleted(true);
-      return setIsSending(false);
+  useEffect(() => {
+    if (hasUploaded) {
+      handlePostForm();
     }
-    toast.error(`Ops! algo deu errado, tente novamente`);
-    return setIsSending(false);
-  }
-
+  }, [hasUploaded]);
   useEffect(() => {
     if (currentStep === 0) {
       if (formData.name === "" || formData.email === "") {
@@ -195,6 +164,8 @@ export function FormSheet({
       setAllowNextStep(true);
     } else if (currentStep === 7) {
       setAllowNextStep(true);
+    } else if (currentStep === 7) {
+      setAllowNextStep(true);
     }
   }, [formData, currentStep]);
 
@@ -205,6 +176,55 @@ export function FormSheet({
     }
   }, []);
 
+  async function handlePostForm() {
+    setIsSending(true);
+    try {
+      const treatedData = {
+        clientId: clientId,
+        projectId: projectId,
+        name: formData.name,
+        email: formData.email,
+        cpfCnpj: formData.cpfCnpj,
+        postalCode: formData.zipCode,
+        address: formData.street,
+        number: formData.number,
+        neighborhood: formData.neighborhood,
+        city: formData.city,
+        state: formData.state,
+        architectureProject:
+          formData.services?.includes("PROJETO ARQUITETÔNICO") || false,
+        socialMediaContent:
+          formData.services?.includes("3D E MÍDIAS PARA REDES SOCIAIS") ||
+          false,
+        complementarProjects:
+          formData.services?.includes("PROJETOS COMPLEMENTARES") || false,
+        area: `${formData.area}m²`,
+        flooring:
+          formData.numberOfFloors !== null
+            ? floors[formData.numberOfFloors]
+            : "",
+        capacity:
+          formData.expectedCapacity !== null
+            ? capacity[formData.expectedCapacity]
+            : "",
+        contractUrl: formData.contractUrl,
+        installmentCount: formData.installmentCount?.toString(),
+        hasSigned: formData.signatureUrl ? true : false,
+      };
+      console.log("treatedData", treatedData);
+      const response = await PostAPI("/contract", treatedData, true);
+      console.log("response", response);
+      if (response.status === 200) {
+        toast.success("Formulário enviado com sucesso!");
+        setCurrentStep(currentStep + 1);
+      }
+    } catch (error) {
+      toast.error(`Ops! algo deu errado, tente novamente,: ${error}`);
+      console.log("erro", error);
+    } finally {
+      setIsSending(false);
+    }
+  }
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetContent
@@ -240,16 +260,20 @@ export function FormSheet({
         ) : currentStep === 6 ? (
           <Step6 />
         ) : currentStep === 7 ? (
-          <Step7 />
+          <Step7
+            uploadContract={uploadContract}
+            setHasUploaded={setHasUploaded}
+            setUploadContract={setUploadContract}
+          />
         ) : (
-          <></>
+          <Step8 />
         )}
         <button
           onClick={HandleNextStep}
           disabled={isSending}
           onKeyDown={(e) => e.key === "Enter" && HandleNextStep()}
           className={cn(
-            "w-full h-12 bg-gradient-to-b from-[#123262dd] to-[#123262] shadow-md border border-[#123262] text-white font-bold text-lg rounded-xl transition duration-300",
+            "w-full h-12 bg-gradient-to-b flex items-center justify-center from-[#123262dd] to-[#123262] shadow-md border border-[#123262] text-white font-bold text-lg rounded-xl transition duration-300",
             !allowNextStep && "opacity-50 cursor-not-allowed"
           )}
         >

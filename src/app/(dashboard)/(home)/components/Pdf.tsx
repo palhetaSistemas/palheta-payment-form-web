@@ -28,6 +28,7 @@ export interface TreatedData {
   area: string;
   flooring: string;
   capacity: string;
+  signatureUrl?: string;
 }
 
 /**
@@ -58,6 +59,7 @@ export interface PalhetaContractProps {
   responsavel?: string;
   telefoneResponsavel?: string;
   dataEmissao?: Date;
+  signatureUrl?: string;
 }
 
 /**
@@ -91,6 +93,10 @@ export const mapTreatedData = (
   responsavel: extras.responsavel ?? "Consultor",
   telefoneResponsavel: extras.telefoneResponsavel ?? "(11) 90000‑0000",
   dataEmissao: extras.dataEmissao ?? new Date(),
+  signatureUrl:
+    "signatureUrl" in extras
+      ? (extras.signatureUrl as string | undefined)
+      : (td.signatureUrl as string | undefined),
 });
 
 // ------------------------------ STYLES ------------------------------------
@@ -135,6 +141,9 @@ const styles = StyleSheet.create({
   bulletDot: { fontFamily: "Helvetica-Bold", marginRight: 4 },
   small: { fontSize: 6, marginTop: 30, textAlign: "justify" },
   label: { fontFamily: "Helvetica-Bold", color: colors.primary },
+  assinaturaWrap: { marginTop: 12, width: 200, height: 60 },
+  assinaturaImg: { width: 200, height: 60, objectFit: "contain" },
+  assinaturaLinha: { fontSize: 10, marginTop: 20, marginBottom: 10 },
   footerPage: {
     position: "absolute",
     fontSize: 8,
@@ -345,29 +354,70 @@ export const PalhetaContract = (props: PalhetaContractProps) => {
             </Text>
           </View>
 
-          <View style={[styles.section, { marginTop: 24 }]}>
-            <Text style={styles.p}>{contratadaRazaoSocial}</Text>
-            <Text style={styles.p}>{"".padEnd(60, "_")} CONTRATANTE</Text>
-          </View>
+          <View
+            style={{
+              width: "100%",
+              display: "flex",
+              flexDirection: "row",
+              gap: 100,
+            }}
+          >
+            <View style={[styles.section, { marginTop: 24 }]}>
+              <Text style={{ color: "#0d123c" }}>Atenciosamente,</Text>
+              <Text
+                style={{
+                  color: "#0d123c",
+                  fontFamily: "Helvetica-Bold",
+                  marginTop: 8,
+                }}
+              >
+                {responsavel?.toUpperCase()}
+              </Text>
+              <Text style={{ color: "#0d123c", marginTop: 4 }}>Consultor</Text>
+              <Text style={{ color: "#0d123c", marginTop: 4 }}>
+                {telefoneResponsavel}
+              </Text>
+              <Text style={{ marginTop: 12 }}>
+                Data: {dataEmissao.toLocaleDateString("pt-BR")}
+              </Text>
+            </View>
+            <View style={[styles.section, { marginTop: 24 }]}>
+              {/* Assinatura CONTRATADA */}
 
-          <View style={[styles.section, { marginTop: 24 }]}>
-            <Text style={{ color: "#0d123c" }}>Atenciosamente,</Text>
-            <Text
-              style={{
-                color: "#0d123c",
-                fontFamily: "Helvetica-Bold",
-                marginTop: 8,
-              }}
-            >
-              {responsavel?.toUpperCase()}
-            </Text>
-            <Text style={{ color: "#0d123c", marginTop: 4 }}>Consultor</Text>
-            <Text style={{ color: "#0d123c", marginTop: 4 }}>
-              {telefoneResponsavel}
-            </Text>
-            <Text style={{ marginTop: 12 }}>
-              Data: {dataEmissao.toLocaleDateString("pt-BR")}
-            </Text>
+              <Text style={styles.assinaturaLinha}>
+                ________________________________________ CONTRATADA
+              </Text>
+              <Text style={styles.p}>{contratadaRazaoSocial}</Text>
+
+              {/* Assinatura CONTRATANTE */}
+              <View style={{ marginTop: 16 }}>
+                {props.signatureUrl ? (
+                  <View
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      gap: 4,
+                      marginTop: 16,
+                    }}
+                  >
+                    <Image
+                      src={props.signatureUrl}
+                      style={styles.assinaturaImg}
+                    />
+                    <Text>CONTRATANTE</Text>
+                  </View>
+                ) : (
+                  <>
+                    <Text style={styles.assinaturaLinha}>
+                      ________________________________________
+                    </Text>
+                  </>
+                )}
+                <Text style={{ fontSize: 10, marginTop: 4 }}>
+                  CONTRATANTE: {contratanteNome}
+                </Text>
+              </View>
+            </View>
           </View>
 
           <Text
