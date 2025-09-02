@@ -6,12 +6,12 @@ export function Step8() {
   return (
     <>
       <span className="font-bold text-lg text-[#123262] w-max mx-auto">
-        ORÇAMENTO SOLICITADO
+        BRIEFING SOLICITADO
       </span>
       <div className="flex flex-col gap-4">
         <label className="text-default-600 w-full text-center font-semibold text-sm">
           Clique no botão abaixo para instalar o aplicativo Palheta Arquitetura
-          e obter o seu orçamento, além de outros benefícios.
+          e obter o seu briefing, além de outros benefícios.
         </label>
         <div className="flex items-center justify-evenly">
           <Image

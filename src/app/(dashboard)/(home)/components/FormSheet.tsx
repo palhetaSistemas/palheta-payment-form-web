@@ -83,6 +83,8 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
     } else if (currentStep === 7) {
       console.log("clicado");
       setUploadContract(true);
+    } else if (currentStep === 8) {
+      setOpen(false);
     }
   };
   useEffect(() => {
@@ -266,7 +268,13 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
             !allowNextStep && "opacity-50 cursor-not-allowed"
           )}
         >
-          {isLoading ? <Loader2 className="animate-spin" /> : "PRÓXIMO"}
+          {isLoading ? (
+            <Loader2 className="animate-spin" />
+          ) : currentStep === 8 ? (
+            "Finalizar Contrato"
+          ) : (
+            "PRÓXIMO"
+          )}
         </button>
       </SheetContent>
     </Sheet>
