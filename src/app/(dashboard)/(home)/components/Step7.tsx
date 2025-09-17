@@ -28,10 +28,10 @@ export function Step7({
   const { formData, setFormData } = useFormContext();
   const { PostAPI } = useApiContext();
   const [signOpen, setSignOpen] = useState(false);
-
+  console.log("formData", formData);
   const searchParams = useSearchParams();
   const clientId = searchParams.get("clientId");
-  const projectId = searchParams.get("projectId");
+  const proposalId = searchParams.get("proposalId");
 
   const floors: Record<number, string> = useMemo(
     () => ({
@@ -59,7 +59,7 @@ export function Step7({
 
   const treatedData = {
     clientId: clientId,
-    projectId: projectId,
+    proposalId: proposalId,
     name: formData.name,
     email: formData.email,
     cpfCnpj: formData.cpfCnpj,

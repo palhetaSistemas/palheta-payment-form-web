@@ -19,8 +19,8 @@ export default function Dashboard() {
   }, []);
 
   if (
-    params.get("projectId") === null ||
-    params.get("projectId") === "" ||
+    params.get("proposalId") === null ||
+    params.get("proposalId") === "" ||
     params.get("clientId") === null ||
     params.get("clientId") === ""
   ) {

@@ -52,7 +52,7 @@ export function FormSheet({
   const [isSending, setIsSending] = useState(false);
 
   const clientId = params.get("clientId");
-  const projectId = params.get("projectId");
+  const proposalId = params.get("proposalId");
 
   const floors: Record<number, string> = {
     1: "TERREO",
@@ -181,7 +181,7 @@ export function FormSheet({
     try {
       const treatedData = {
         clientId: clientId,
-        projectId: projectId,
+        proposalId: proposalId,
         name: formData.name,
         email: formData.email,
         cpfCnpj: formData.cpfCnpj,

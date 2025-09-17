@@ -6,13 +6,14 @@ import {
   Text,
   View,
 } from "@react-pdf/renderer";
+import React from "react";
 
 /**
  * Dados vindos do front (treatedData)
  */
 export interface TreatedData {
   clientId: string | null;
-  projectId: string | null;
+  proposalId: string | null;
   name: string;
   email: string;
   cpfCnpj: string;
@@ -91,7 +92,7 @@ export const mapTreatedData = (
   formasPagamento: extras.formasPagamento ?? "A definir",
   prazoExecucao: extras.prazoExecucao ?? "50 (cinquenta) dias corridos",
   responsavel: extras.responsavel ?? "Consultor",
-  telefoneResponsavel: extras.telefoneResponsavel ?? "(11) 90000‑0000",
+  telefoneResponsavel: extras.telefoneResponsavel ?? "(11) 90000-0000",
   dataEmissao: extras.dataEmissao ?? new Date(),
   signatureUrl:
     "signatureUrl" in extras
@@ -112,13 +113,13 @@ const styles = StyleSheet.create({
     color: colors.text,
     flexDirection: "column",
     height: "100vh",
-    lineHeight: 1.35,
+    lineHeight: 1,
   },
   pageView: {
     flex: 1,
     flexDirection: "column",
-    padding: 35,
-    paddingVertical: 100,
+    padding: 15,
+    paddingVertical: 80,
   },
   fullBg: {
     width: "100%",
@@ -197,7 +198,7 @@ export const PalhetaContract = (props: PalhetaContractProps) => {
     formasPagamento = "A definir",
     prazoExecucao = "50 (cinquenta) dias corridos",
     responsavel = "Consultor",
-    telefoneResponsavel = "(11) 90000‑0000",
+    telefoneResponsavel = "(11) 90000-0000",
     dataEmissao = new Date(),
   } = props;
 
@@ -224,14 +225,14 @@ export const PalhetaContract = (props: PalhetaContractProps) => {
             {contratanteTelefone && (
               <Text style={styles.p}>TELEFONE: {contratanteTelefone}</Text>
             )}
-            <Text style={styles.p}>E‑MAIL: {contratanteEmail}</Text>
+            <Text style={styles.p}>E-MAIL: {contratanteEmail}</Text>
           </View>
 
           <View style={styles.section}>
             <Text style={styles.p}>
-              As partes acima obrigações celebram o presente Contrato de Adesão
-              para prestação de serviços, conforme as condições abaixo
-              descritas, regido pela boa‑fé e pelo Código de Defesa do
+              As partes acima identificadas celebram o presente Contrato de
+              Adesão para prestação de serviços, conforme as condições abaixo
+              descritas, regido pela boa-fé e pelo Código de Defesa do
               Consumidor (Lei nº 8.078/1990).
             </Text>
           </View>
@@ -239,8 +240,7 @@ export const PalhetaContract = (props: PalhetaContractProps) => {
           <View style={styles.section}>
             <Text style={styles.h1}>1. OBJETO DO CONTRATO</Text>
             <Text style={styles.p}>
-              O presente contrato tem como objeto a prestação de serviços de
-              PROJETO DE ARQUITETURA, abrangendo:
+              Prestação de serviços de PROJETO DE ARQUITETURA, abrangendo:
             </Text>
             {pacote1 && <Bullet>PACOTE 01 – PROJETO ARQUITETÔNICO</Bullet>}
             {pacote2 && (
@@ -252,49 +252,62 @@ export const PalhetaContract = (props: PalhetaContractProps) => {
             <Bullet>
               ÁREA: {area} | CAPACIDADE: {capacidade} | PAVIMENTOS: {pavimentos}
             </Bullet>
+
+            {/* 1.2 Desenvolvimento com base em briefing e reunião */}
+            <Numbered n="1.2">
+              O projeto será desenvolvido com base nas informações fornecidas
+              pela CONTRATANTE, por meio de: (a) formulário de briefing, a ser
+              preenchido para caracterizar o projeto e detalhar expectativas e
+              necessidades; e (b) reunião gravada via Meet entre as partes,
+              opcionalmente, como referência adicional para atender necessidades
+              específicas.
+            </Numbered>
           </View>
 
           <View style={styles.section}>
-            <Text style={styles.h1}>2. DESENVOLVIMENTO DO PROJETO</Text>
-            <Bullet>Formulário de briefing preenchido pela CONTRATANTE.</Bullet>
-            <Bullet>Reunião gravada via Meet.</Bullet>
-          </View>
-
-          <View style={styles.section}>
-            <Text style={styles.h1}>3. OBRIGAÇÕES DAS PARTES</Text>
+            <Text style={styles.h1}>2. OBRIGAÇÕES DAS PARTES</Text>
             <Text style={[styles.label, { marginTop: 4 }]}>CONTRATADA:</Text>
             <Bullet>Prestar os serviços conforme prazos e condições.</Bullet>
-            <Bullet>Disponibilizar arquivos finais em PDF, JPEG e MP4.</Bullet>
-            <Bullet>Oferecer até 3 revisões gratuitas.</Bullet>
+            <Bullet>
+              Disponibilizar arquivos finais em PDF, JPEG e MP4 sem custos
+              adicionais.
+            </Bullet>
+            <Bullet>
+              Oferecer até 3 (três) revisões sem custos; ajustes excedentes
+              poderão ser cobrados conforme tabela vigente.
+            </Bullet>
+
             <Text style={[styles.label, { marginTop: 8 }]}>CONTRATANTE:</Text>
-            <Bullet>Disponibilizar informações em até 10 dias corridos.</Bullet>
-            <Bullet>Efetuar pagamentos conforme item 4.</Bullet>
+            <Bullet>
+              Disponibilizar, em até 10 (dez) dias corridos, as informações e
+              materiais possíveis (ex.: planta topográfica, especificações).
+            </Bullet>
+            <Bullet>Efetuar os pagamentos na forma do item 3.</Bullet>
           </View>
 
           <View style={styles.section}>
-            <Text style={styles.h1}>4. FORMA E PRAZO DE PAGAMENTO</Text>
-            <Numbered n="4.1">
+            <Text style={styles.h1}>3. FORMA E PRAZO DE PAGAMENTO</Text>
+            <Numbered n="3.1">
               Valor total do serviço:{" "}
               {valorTotal.toLocaleString("pt-BR", {
                 style: "currency",
                 currency: "BRL",
               })}
-              . Parcelamento: {formasPagamento}
+              . Parcelamento/condições: {formasPagamento}.
             </Numbered>
-            <Numbered n="4.2">
-              Custos adicionais (taxas, RRT, etc.) serão cobrados à parte.
-            </Numbered>
-            <Numbered n="4.3">O não pagamento implicará:</Numbered>
-            <Bullet>Multa de 2% sobre o valor devido.</Bullet>
-            <Bullet>Juros de 1% ao mês.</Bullet>
-            <Bullet>Suspensão dos serviços.</Bullet>
-          </View>
 
-          <Text
-            style={styles.footerPage}
-            render={({ pageNumber }) => `${pageNumber}`}
-            fixed
-          ></Text>
+            <Numbered n="3.2">
+              O valor acordado não inclui taxas de prefeitura, impostos, custos
+              de vistorias técnicas ou Registro de Responsabilidade Técnica
+              (RRT). Caso necessários, serão cobrados à parte, não se
+              responsabilizando a CONTRATADA por tais despesas.
+            </Numbered>
+
+            <Numbered n="3.3">Em caso de inadimplência:</Numbered>
+            <Bullet>Multa de 2% (dois por cento) sobre o valor devido.</Bullet>
+            <Bullet>Juros de mora de 1% (um por cento) ao mês.</Bullet>
+            <Bullet>Suspensão dos serviços até a regularização.</Bullet>
+          </View>
         </View>
       </Page>
 
@@ -303,57 +316,94 @@ export const PalhetaContract = (props: PalhetaContractProps) => {
         <Image src="/images/image4.jpg" style={styles.fullBg} fixed />
         <View style={styles.pageView}>
           <View style={styles.section}>
-            <Text style={styles.h1}>5. ALTERAÇÕES E CANCELAMENTOS</Text>
+            <Text style={styles.h1}>4. ALTERAÇÕES E CANCELAMENTOS</Text>
+            <Numbered n="4.1">
+              Alterações solicitadas após a entrega do projeto poderão ser
+              cobradas em 10% (dez por cento) do valor total do contrato.
+            </Numbered>
+            <Numbered n="4.2">Cancelamento pelo CONTRATANTE:</Numbered>
+            <Bullet>Ressarcimento dos custos já incorridos.</Bullet>
+            <Bullet>Multa de 10% (dez por cento) do valor total.</Bullet>
+          </View>
+
+          <View style={styles.section}>
+            <Text style={styles.h1}>5. PRAZO DE EXECUÇÃO</Text>
             <Numbered n="5.1">
-              Alterações após entrega: 10% do valor do contrato.
+              Entrega em até {prazoExecucao}, podendo ser ajustado mediante
+              acordo entre as partes.
             </Numbered>
-            <Numbered n="5.2">Cancelamento pelo CONTRATANTE:</Numbered>
-            <Bullet>Custos já incorridos pela CONTRATADA.</Bullet>
-            <Bullet>Multa de 10% do contrato.</Bullet>
-          </View>
-
-          <View style={styles.section}>
-            <Text style={styles.h1}>6. PRAZO DE EXECUÇÃO</Text>
-            <Numbered n="6.1">Entrega em até {prazoExecucao}.</Numbered>
-            <Numbered n="6.2">
-              Suspensão superior a 3 meses = rescisão (item 5.2).
+            <Numbered n="5.2">
+              Suspensão do desenvolvimento por mais de 3 (três) meses, contados
+              da assinatura, será considerada rescisão imotivada, aplicando-se o
+              item 4.2.
             </Numbered>
           </View>
 
           <View style={styles.section}>
-            <Text style={styles.h1}>7. DIREITOS AUTORAIS E USO DO PROJETO</Text>
+            <Text style={styles.h1}>6. DIREITOS AUTORAIS E USO DO PROJETO</Text>
             <Bullet>
-              Projeto protegido pela legislação de direitos autorais.
+              O projeto é protegido pela legislação de direitos autorais.
             </Bullet>
             <Bullet>
-              Uso exclusivo para execução da obra. Reprodução ou alteração
-              proibida sem autorização prévia.
+              O CONTRATANTE recebe direito de uso exclusivo para execução da
+              obra contratada, sendo vedada reprodução/alteração sem autorização
+              prévia da CONTRATADA.
             </Bullet>
           </View>
 
           <View style={styles.section}>
-            <Text style={styles.h1}>8. ACEITE E ADESÃO</Text>
-            <Bullet>Assinatura do CONTRATANTE.</Bullet>
-            <Bullet>Pagamento inicial ou uso dos serviços.</Bullet>
+            <Text style={styles.h1}>7. ACEITE E ADESÃO</Text>
+            <Bullet>Com a assinatura do CONTRATANTE; e/ou</Bullet>
+            <Bullet>
+              Pelo pagamento inicial ou uso dos serviços, configurando adesão
+              automática.
+            </Bullet>
           </View>
 
           <View style={styles.section}>
-            <Text style={styles.h1}>9. ENTREGA DOS ARQUIVOS</Text>
-            <Bullet>Formatos fornecidos sem custos: PDF, JPEG e MP4.</Bullet>
+            <Text style={styles.h1}>8. ENTREGA DOS ARQUIVOS</Text>
+            <Bullet>Formatos sem custo: PDF, JPEG e MP4.</Bullet>
             <Bullet>
-              Arquivos .DWG poderão ser disponibilizados mediante pagamento
-              adicional de 5% do valor total do contrato.
+              Arquivos .DWG (ou outros não listados) poderão ser fornecidos
+              mediante pagamento adicional de 5% do valor total do contrato,
+              quitado previamente à entrega.
+            </Bullet>
+          </View>
+
+          {/* NOVA CLÁUSULA 9: SIGILOSIDADE (do modelo) */}
+          <View style={styles.section}>
+            <Text style={styles.h1}>9. SIGILOSIDADE</Text>
+            <Text style={styles.p}>
+              Consideram-se confidenciais todas as informações, dados, imagens,
+              valores, especificações e quaisquer conteúdos relacionados à obra,
+              transmitidos por quaisquer meios, obrigando-se a CONTRATADA, seus
+              prepostos e subcontratados a guardar absoluto sigilo.
+            </Text>
+            <Bullet>
+              É vedada a utilização de imagens, menções ao nome da CONTRATANTE
+              ou divulgação dos trabalhos em redes sociais, portfólios ou
+              qualquer outro meio, sem autorização expressa e prévia da
+              CONTRATANTE. A violação sujeita a CONTRATADA à multa de R$
+              100.000,00 (cem mil reais), sem prejuízo de perdas e danos.
+            </Bullet>
+            <Bullet>
+              Na hipótese de não aprovação, pela CONTRATANTE, de material
+              publicitário eventualmente desenvolvido pela CONTRATADA, a
+              CONTRATANTE pagará à CONTRATADA, a título de indenização única,
+              geral e compensatória, 10% (dez por cento) do valor total do
+              contrato, em razão dos custos, esforços e recursos despendidos.
             </Bullet>
           </View>
 
           <View style={styles.section}>
             <Text style={styles.h1}>10. FORO</Text>
             <Text style={styles.p}>
-              Fica eleito o Foro da Comarca de São Paulo‑SP para dirimir
+              Fica eleito o Foro da Comarca de São Paulo-SP para dirimir
               quaisquer dúvidas oriundas deste contrato.
             </Text>
           </View>
 
+          {/* Assinaturas */}
           <View
             style={{
               width: "100%",
@@ -381,15 +431,13 @@ export const PalhetaContract = (props: PalhetaContractProps) => {
                 Data: {dataEmissao.toLocaleDateString("pt-BR")}
               </Text>
             </View>
-            <View style={[styles.section, { marginTop: 24 }]}>
-              {/* Assinatura CONTRATADA */}
 
+            <View style={[styles.section, { marginTop: 24 }]}>
               <Text style={styles.assinaturaLinha}>
                 ________________________________________ CONTRATADA
               </Text>
               <Text style={styles.p}>{contratadaRazaoSocial}</Text>
 
-              {/* Assinatura CONTRATANTE */}
               <View style={{ marginTop: 16 }}>
                 {props.signatureUrl ? (
                   <View
@@ -411,6 +459,7 @@ export const PalhetaContract = (props: PalhetaContractProps) => {
                     <Text style={styles.assinaturaLinha}>
                       ________________________________________
                     </Text>
+                    <Text>CONTRATANTE</Text>
                   </>
                 )}
                 <Text style={{ fontSize: 10, marginTop: 4 }}>
@@ -424,7 +473,7 @@ export const PalhetaContract = (props: PalhetaContractProps) => {
             style={styles.footerPage}
             render={({ pageNumber }) => `${pageNumber}`}
             fixed
-          ></Text>
+          />
         </View>
       </Page>
     </Document>
