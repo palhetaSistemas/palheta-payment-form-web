@@ -18,12 +18,7 @@ export default function Dashboard() {
     requestAnimationFrame(raf);
   }, []);
 
-  if (
-    params.get("proposalId") === null ||
-    params.get("proposalId") === "" ||
-    params.get("clientId") === null ||
-    params.get("clientId") === ""
-  ) {
+  if (params.get("proposalId") === null || params.get("proposalId") === "") {
     return <ErrorBlock />;
   } else {
     return (

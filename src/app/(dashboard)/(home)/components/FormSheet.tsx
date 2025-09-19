@@ -42,7 +42,7 @@ export function FormSheet({
   setIsCompleted,
 }: FormSheetProps) {
   const { formData } = useFormContext();
-  const { PostAPI } = useApiContext();
+  const { PostAPI, GetAPI } = useApiContext();
   const params = useSearchParams();
   const [currentStep, setCurrentStep] = useState(0);
   const [allowNextStep, setAllowNextStep] = useState(false);
@@ -50,8 +50,12 @@ export function FormSheet({
   const [uploadContract, setUploadContract] = useState(false);
   const [hasUploaded, setHasUploaded] = useState(false);
   const [isSending, setIsSending] = useState(false);
+  const [values, setValues] = useState({
+    complementarValue: 0,
+    architectureValue: 0,
+    socialMediaValue: 0,
+  });
 
-  const clientId = params.get("clientId");
   const proposalId = params.get("proposalId");
 
   const floors: Record<number, string> = {
@@ -176,11 +180,42 @@ export function FormSheet({
     }
   }, []);
 
+  async function handleGetProposalDetails() {
+    const result = await GetAPI(`/proposal/details/${proposalId}`, false);
+    console.log(result);
+
+    if (result.status === 200) {
+      setValues({
+        complementarValue: result.body.proposal.complementarProjectsValue,
+        architectureValue: result.body.proposal.architectureValue,
+        socialMediaValue: result.body.proposal.socialMediaContentValue,
+      });
+    }
+  }
+
+  useEffect(() => {
+    handleGetProposalDetails();
+  }, [proposalId]);
+
   async function handlePostForm() {
     setIsSending(true);
+
+    const architectureProject =
+      formData.services?.includes("PROJETO ARQUITETÔNICO") || false;
+
+    const socialMediaContent =
+      formData.services?.includes("3D E MÍDIAS PARA REDES SOCIAIS") || false;
+
+    const complementarProjects =
+      formData.services?.includes("PROJETOS COMPLEMENTARES") || false;
+
+    const finalValue =
+      (architectureProject ? values.architectureValue : 0) +
+      (socialMediaContent ? values.socialMediaValue : 0) +
+      (complementarProjects ? values.complementarValue : 0);
+
     try {
       const treatedData = {
-        clientId: clientId,
         proposalId: proposalId,
         name: formData.name,
         email: formData.email,
@@ -210,6 +245,7 @@ export function FormSheet({
         contractUrl: formData.contractUrl,
         installmentCount: formData.installmentCount?.toString(),
         hasSigned: formData.signatureUrl ? true : false,
+        finalValue: finalValue,
       };
       console.log("treatedData", treatedData);
       const response = await PostAPI("/contract", treatedData, true);
