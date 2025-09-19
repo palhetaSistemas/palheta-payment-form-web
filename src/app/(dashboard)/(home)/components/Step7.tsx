@@ -30,7 +30,6 @@ export function Step7({
   const { formData, setFormData } = useFormContext();
   const { PostAPI } = useApiContext();
   const [signOpen, setSignOpen] = useState(false);
-  console.log("formData", formData);
   const searchParams = useSearchParams();
   const clientId = searchParams.get("clientId");
   const proposalId = searchParams.get("proposalId");
@@ -98,16 +97,13 @@ export function Step7({
   });
 
   async function uploadPdf(blob: Blob) {
-    if (formData.contractUrl !== null && formData.contractUrl !== undefined)
-      return;
-
     const docFormData = new FormData();
     docFormData.append("file", blob, "Contrato-Palheta.pdf");
     try {
       const response = await PostAPI("/file", docFormData, true);
+
       if (response.status === 200) {
-        setFormData({ ...formData, contractUrl: response.body.fullUrl });
-        console.log("Arquivo enviado com sucesso!");
+        setFormData({ ...formData, contractUrl: response.body.url });
         setUploadContract(false);
         setHasUploaded(true);
       }
@@ -122,8 +118,10 @@ export function Step7({
     const blob = await pdf(
       <PalhetaContract {...contratoPropsLocal} />
     ).toBlob();
+
     await uploadPdf(blob);
   }
+
   useEffect(() => {
     if (uploadContract) {
       handleSend();
@@ -132,7 +130,6 @@ export function Step7({
 
   // Confirmação do modal
   const onConfirmSignature = (dataUrl: string) => {
-    console.log("dataUrl", dataUrl);
     setFormData({ ...formData, signatureUrl: dataUrl } as any);
     setSignOpen(false);
   };
@@ -158,7 +155,7 @@ export function Step7({
         >
           Assinar contrato
         </button>
-        {(formData as any).signature && (
+        {(formData as any).signatureUrl && (
           <span className="text-xs text-green-700">
             Assinatura adicionada ✓
           </span>

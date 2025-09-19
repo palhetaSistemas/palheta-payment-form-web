@@ -115,7 +115,6 @@ export function FormSheet({
     } else if (currentStep === 6) {
       return setCurrentStep(currentStep + 1);
     } else if (currentStep === 7) {
-      console.log("clicado");
       return setUploadContract(true);
     } else if (currentStep === 8) {
       setOpen(false);
@@ -182,7 +181,6 @@ export function FormSheet({
 
   async function handleGetProposalDetails() {
     const result = await GetAPI(`/proposal/details/${proposalId}`, false);
-    console.log(result);
 
     if (result.status === 200) {
       setValues({
@@ -197,23 +195,34 @@ export function FormSheet({
     handleGetProposalDetails();
   }, [proposalId]);
 
-  const architectureProject =
-    formData.services?.includes("PROJETO ARQUITETÔNICO") || false;
+  const [finalValue, setFinalValue] = useState(0);
 
-  const socialMediaContent =
-    formData.services?.includes("3D E MÍDIAS PARA REDES SOCIAIS") || false;
+  useEffect(() => {
+    if (
+      values.complementarValue &&
+      values.architectureValue &&
+      values.socialMediaValue
+    ) {
+      const architectureProject =
+        formData.services?.includes("PROJETO ARQUITETÔNICO") || false;
 
-  const complementarProjects =
-    formData.services?.includes("PROJETOS COMPLEMENTARES") || false;
+      const socialMediaContent =
+        formData.services?.includes("3D E MÍDIAS PARA REDES SOCIAIS") || false;
 
-  const finalValue =
-    (architectureProject ? values.architectureValue : 0) +
-    (socialMediaContent ? values.socialMediaValue : 0) +
-    (complementarProjects ? values.complementarValue : 0);
-  console.log("finalValue", finalValue);
+      const complementarProjects =
+        formData.services?.includes("PROJETOS COMPLEMENTARES") || false;
+
+      const finalValue =
+        (architectureProject ? values.architectureValue : 0) +
+        (socialMediaContent ? values.socialMediaValue : 0) +
+        (complementarProjects ? values.complementarValue : 0);
+
+      setFinalValue(finalValue);
+    }
+  }, [values]);
+
   async function handlePostForm() {
     setIsSending(true);
-
     try {
       const treatedData = {
         proposalId: proposalId,
@@ -245,11 +254,10 @@ export function FormSheet({
         contractUrl: formData.contractUrl,
         installmentCount: formData.installmentCount?.toString(),
         hasSigned: formData.signatureUrl ? true : false,
-        finalValue: finalValue,
+        finalValue: finalValue.toString(),
       };
-      console.log("treatedData", treatedData);
       const response = await PostAPI("/contract", treatedData, true);
-      console.log("response", response);
+
       if (response.status === 200) {
         toast.success("Formulário enviado com sucesso!");
         setCurrentStep(currentStep + 1);
