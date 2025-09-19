@@ -197,22 +197,22 @@ export function FormSheet({
     handleGetProposalDetails();
   }, [proposalId]);
 
+  const architectureProject =
+    formData.services?.includes("PROJETO ARQUITETÔNICO") || false;
+
+  const socialMediaContent =
+    formData.services?.includes("3D E MÍDIAS PARA REDES SOCIAIS") || false;
+
+  const complementarProjects =
+    formData.services?.includes("PROJETOS COMPLEMENTARES") || false;
+
+  const finalValue =
+    (architectureProject ? values.architectureValue : 0) +
+    (socialMediaContent ? values.socialMediaValue : 0) +
+    (complementarProjects ? values.complementarValue : 0);
+  console.log("finalValue", finalValue);
   async function handlePostForm() {
     setIsSending(true);
-
-    const architectureProject =
-      formData.services?.includes("PROJETO ARQUITETÔNICO") || false;
-
-    const socialMediaContent =
-      formData.services?.includes("3D E MÍDIAS PARA REDES SOCIAIS") || false;
-
-    const complementarProjects =
-      formData.services?.includes("PROJETOS COMPLEMENTARES") || false;
-
-    const finalValue =
-      (architectureProject ? values.architectureValue : 0) +
-      (socialMediaContent ? values.socialMediaValue : 0) +
-      (complementarProjects ? values.complementarValue : 0);
 
     try {
       const treatedData = {
@@ -300,6 +300,7 @@ export function FormSheet({
             uploadContract={uploadContract}
             setHasUploaded={setHasUploaded}
             setUploadContract={setUploadContract}
+            finalValues={finalValue}
           />
         ) : (
           <Step8 />

@@ -19,11 +19,13 @@ interface Props {
   uploadContract: boolean;
   setUploadContract: React.Dispatch<React.SetStateAction<boolean>>;
   setHasUploaded: React.Dispatch<React.SetStateAction<boolean>>;
+  finalValues: any;
 }
 export function Step7({
   uploadContract,
   setUploadContract,
   setHasUploaded,
+  finalValues,
 }: Props) {
   const { formData, setFormData } = useFormContext();
   const { PostAPI } = useApiContext();
@@ -90,7 +92,7 @@ export function Step7({
   } as any;
 
   const contratoProps = mapTreatedData(treatedData, {
-    valorTotal: 15000,
+    valorTotal: finalValues,
     formasPagamento: "30 % na assinatura + 70 % na entrega",
     responsavel: "Edi Palheta",
   });
