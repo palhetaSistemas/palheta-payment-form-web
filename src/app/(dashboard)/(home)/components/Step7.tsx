@@ -18,12 +18,14 @@ import { SignatureModal } from "./SignatureModal";
 interface Props {
   uploadContract: boolean;
   setUploadContract: React.Dispatch<React.SetStateAction<boolean>>;
+  hasUploaded: boolean;
   setHasUploaded: React.Dispatch<React.SetStateAction<boolean>>;
   finalValues: any;
 }
 export function Step7({
   uploadContract,
   setUploadContract,
+  hasUploaded,
   setHasUploaded,
   finalValues,
 }: Props) {
@@ -90,32 +92,40 @@ export function Step7({
     // NOVO: assinatura como dataURL (base64) vinda do modal
     signatureUrl: (formData as any).signatureUrl || null,
   } as any;
-
+  const currencyFormatter = new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+    minimumFractionDigits: 2,
+  });
+  const installmentCount = formData?.installmentCount ?? 1; // fallback para 1 se null/undefined
+  const payment = finalValues / installmentCount;
   const contratoProps = mapTreatedData(treatedData, {
     valorTotal: finalValues,
-    formasPagamento: "30 % na assinatura + 70 % na entrega",
+    formasPagamento: `${installmentCount}x de R$ ${currencyFormatter.format(
+      payment
+    )}`,
     responsavel: "Edi Palheta",
   });
 
   async function uploadPdf(blob: Blob) {
-    if (formData.contractUrl !== null && formData.contractUrl !== undefined)
-      return;
-
+    console.log("chego1");
+    console.log("formData.contractUrl123131", formData.contractUrl);
+    console.log("chego2");
     const docFormData = new FormData();
     docFormData.append("file", blob, "Contrato-Palheta.pdf");
     try {
       const response = await PostAPI("/file", docFormData, true);
+      console.log("response file", response);
       if (response.status === 200) {
         setFormData({ ...formData, contractUrl: response.body.fullUrl });
         console.log("Arquivo enviado com sucesso!");
-        setUploadContract(false);
         setHasUploaded(true);
       }
     } catch (error) {
       console.log("error", error);
     }
   }
-
+  console.log("hasUploaded", hasUploaded);
   async function handleSend() {
     // monta as props (já contendo signatureUrl quando houver)
     const contratoPropsLocal = mapTreatedData(treatedData);

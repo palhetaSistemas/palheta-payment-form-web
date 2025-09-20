@@ -56,7 +56,6 @@ export interface PalhetaContractProps {
   valorTotal?: number;
   formasPagamento?: string;
   prazoExecucao?: string;
-
   responsavel?: string;
   telefoneResponsavel?: string;
   dataEmissao?: Date;
@@ -194,7 +193,7 @@ export const PalhetaContract = (props: PalhetaContractProps) => {
     pacote1,
     pacote2,
     pacote3,
-    valorTotal = 0,
+    valorTotal,
     formasPagamento = "A definir",
     prazoExecucao = "50 (cinquenta) dias corridos",
     responsavel = "Consultor",
@@ -289,7 +288,7 @@ export const PalhetaContract = (props: PalhetaContractProps) => {
             <Text style={styles.h1}>3. FORMA E PRAZO DE PAGAMENTO</Text>
             <Numbered n="3.1">
               Valor total do serviço:{" "}
-              {valorTotal.toLocaleString("pt-BR", {
+              {valorTotal?.toLocaleString("pt-BR", {
                 style: "currency",
                 currency: "BRL",
               })}

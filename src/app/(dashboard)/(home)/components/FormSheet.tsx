@@ -113,6 +113,8 @@ export function FormSheet({
         return setCurrentStep(currentStep + 1);
       }
     } else if (currentStep === 6) {
+      setUploadContract(false);
+      setHasUploaded(false);
       return setCurrentStep(currentStep + 1);
     } else if (currentStep === 7) {
       console.log("clicado");
@@ -122,11 +124,7 @@ export function FormSheet({
       return setIsCompleted(true);
     }
   };
-  useEffect(() => {
-    if (hasUploaded) {
-      handlePostForm();
-    }
-  }, [hasUploaded]);
+
   useEffect(() => {
     if (currentStep === 0) {
       if (formData.name === "" || formData.email === "") {
@@ -212,8 +210,9 @@ export function FormSheet({
     (complementarProjects ? values.complementarValue : 0);
   console.log("finalValue", finalValue);
   async function handlePostForm() {
+    console.log("chegou aqui0 ");
     setIsSending(true);
-
+    console.log("chegou aqui ");
     try {
       const treatedData = {
         proposalId: proposalId,
@@ -245,8 +244,9 @@ export function FormSheet({
         contractUrl: formData.contractUrl,
         installmentCount: formData.installmentCount?.toString(),
         hasSigned: formData.signatureUrl ? true : false,
-        finalValue: finalValue,
+        finalValue: finalValue.toString(),
       };
+      console.log("chegou aqui 2");
       console.log("treatedData", treatedData);
       const response = await PostAPI("/contract", treatedData, true);
       console.log("response", response);
@@ -261,6 +261,14 @@ export function FormSheet({
       setIsSending(false);
     }
   }
+  useEffect(() => {
+    console.log("ch1");
+    if (hasUploaded) {
+      console.log("ch2");
+      handlePostForm();
+    }
+  }, [hasUploaded]);
+  console.log("hasUploaded23", hasUploaded);
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetContent
@@ -299,6 +307,7 @@ export function FormSheet({
           <Step7
             uploadContract={uploadContract}
             setHasUploaded={setHasUploaded}
+            hasUploaded={hasUploaded}
             setUploadContract={setUploadContract}
             finalValues={finalValue}
           />
