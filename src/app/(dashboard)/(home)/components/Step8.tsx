@@ -16,7 +16,10 @@ export function Step8() {
         <div className="flex items-center justify-evenly">
           <Image
             onClick={() =>
-              window.open("https://www.apple.com/br/app-store/", "_blank")
+              window.open(
+                "https://apps.apple.com/br/app/palheta-arquitetura/id6751516461",
+                "_blank"
+              )
             }
             src="/appleP.png"
             alt=""
@@ -26,7 +29,10 @@ export function Step8() {
           />
           <Image
             onClick={() =>
-              window.open("https://play.google.com/store/apps", "_blank")
+              window.open(
+                "https://play.google.com/store/apps/details?id=com.palheta.palhetaapp&hl=pt_BR",
+                "_blank"
+              )
             }
             src="/googleP.png"
             alt=""

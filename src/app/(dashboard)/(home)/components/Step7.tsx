@@ -107,24 +107,16 @@ export function Step7({
   });
 
   async function uploadPdf(blob: Blob) {
-    console.log("chego1");
-    console.log("formData.contractUrl123131", formData.contractUrl);
-    console.log("chego2");
     const docFormData = new FormData();
     docFormData.append("file", blob, "Contrato-Palheta.pdf");
     try {
       const response = await PostAPI("/file", docFormData, true);
-      console.log("response file", response);
       if (response.status === 200) {
         setFormData({ ...formData, contractUrl: response.body.fullUrl });
-        console.log("Arquivo enviado com sucesso!");
         setHasUploaded(true);
       }
-    } catch (error) {
-      console.log("error", error);
-    }
+    } catch (error) {}
   }
-  console.log("hasUploaded", hasUploaded);
   async function handleSend() {
     // monta as props (já contendo signatureUrl quando houver)
     const contratoPropsLocal = mapTreatedData(treatedData);
@@ -146,7 +138,6 @@ export function Step7({
     setFormData({ ...formData, signatureUrl: dataUrl } as any);
     setSignOpen(false);
   };
-
   return (
     <>
       <span className="mx-auto w-max text-lg font-bold text-[#123262]">

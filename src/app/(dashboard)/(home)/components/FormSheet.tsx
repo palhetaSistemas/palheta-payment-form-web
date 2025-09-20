@@ -179,7 +179,6 @@ export function FormSheet({
 
   async function handleGetProposalDetails() {
     const result = await GetAPI(`/proposal/details/${proposalId}`, false);
-
     if (result.status === 200) {
       setValues({
         complementarValue: result.body.proposal.complementarProjectsValue,
@@ -194,22 +193,20 @@ export function FormSheet({
   }, [proposalId]);
 
   const [finalValue, setFinalValue] = useState(0);
+  const architectureProject =
+    formData.services?.includes("PROJETO ARQUITETÔNICO") || false;
 
+  const socialMediaContent =
+    formData.services?.includes("3D E MÍDIAS PARA REDES SOCIAIS") || false;
+
+  const complementarProjects =
+    formData.services?.includes("PROJETOS COMPLEMENTARES") || false;
   useEffect(() => {
     if (
       values.complementarValue &&
       values.architectureValue &&
       values.socialMediaValue
     ) {
-      const architectureProject =
-        formData.services?.includes("PROJETO ARQUITETÔNICO") || false;
-
-      const socialMediaContent =
-        formData.services?.includes("3D E MÍDIAS PARA REDES SOCIAIS") || false;
-
-      const complementarProjects =
-        formData.services?.includes("PROJETOS COMPLEMENTARES") || false;
-
       const finalValue =
         (architectureProject ? values.architectureValue : 0) +
         (socialMediaContent ? values.socialMediaValue : 0) +
@@ -217,12 +214,9 @@ export function FormSheet({
 
       setFinalValue(finalValue);
     }
-  }, [values]);
-
+  }, [values, architectureProject, socialMediaContent, complementarProjects]);
   async function handlePostForm() {
-    console.log("chegou aqui0 ");
     setIsSending(true);
-    console.log("chegou aqui ");
     try {
       const treatedData = {
         proposalId: proposalId,
@@ -256,8 +250,6 @@ export function FormSheet({
         hasSigned: formData.signatureUrl ? true : false,
         finalValue: finalValue.toString(),
       };
-      console.log("chegou aqui 2");
-      console.log("treatedData", treatedData);
       const response = await PostAPI("/contract", treatedData, true);
 
       if (response.status === 200) {
@@ -266,19 +258,15 @@ export function FormSheet({
       }
     } catch (error) {
       toast.error(`Ops! algo deu errado, tente novamente,: ${error}`);
-      console.log("erro", error);
     } finally {
       setIsSending(false);
     }
   }
   useEffect(() => {
-    console.log("ch1");
     if (hasUploaded) {
-      console.log("ch2");
       handlePostForm();
     }
   }, [hasUploaded]);
-  console.log("hasUploaded23", hasUploaded);
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetContent
