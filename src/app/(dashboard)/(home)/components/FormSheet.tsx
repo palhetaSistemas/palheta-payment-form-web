@@ -3,7 +3,7 @@ import { Sheet, SheetContent } from "@/src/components/ui/sheet";
 import { useApiContext } from "@/src/context/ApiContext";
 import { useFormContext } from "@/src/context/Contex";
 import { cn } from "@/src/lib/utils";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Loader2 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -321,7 +321,13 @@ export function FormSheet({
             !allowNextStep && "opacity-50 cursor-not-allowed"
           )}
         >
-          {isCompleted ? "FINALIZAR" : "PRÓXIMO"}
+          {uploadContract && currentStep === 7 ? (
+            <Loader2 className="animate-spin" />
+          ) : isCompleted ? (
+            "FINALIZAR"
+          ) : (
+            "PRÓXIMO"
+          )}
         </button>
       </SheetContent>
     </Sheet>
