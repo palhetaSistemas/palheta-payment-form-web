@@ -279,7 +279,7 @@ export function FormSheet({
         )}
         onKeyDown={(e) => e.key === "Enter" && HandleNextStep()}
       >
-        {currentStep > 0 && (
+        {currentStep > 0 && currentStep < 8 && (
           <ArrowLeft
             className="text-[#123262] absolute top-2 left-2 w-6 h-6"
             onClick={() => {
@@ -323,6 +323,8 @@ export function FormSheet({
         >
           {uploadContract && currentStep === 7 ? (
             <Loader2 className="animate-spin" />
+          ) : currentStep === 8 ? (
+            "FECHAR"
           ) : isCompleted ? (
             "FINALIZAR"
           ) : (
